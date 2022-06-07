@@ -11,7 +11,7 @@ public class PlayerControllerScript : MonoBehaviour
     float playerAcceleration;           // 민첩도? 플레이어 이동 가속도
     int playerState = 0;                // 애니메이션에 넣기 위한 플레이어 움직임 상태
     Vector3 speed;                      // 플레이어 현재속도
-    int direction = 0;                  // 움직이는 방향
+    float direction = 0;                  // 움직이는 방향
     [SerializeField]
     float breakThreshold;               // 이 속도 이하면 아예 멈춤
     [SerializeField]
@@ -37,6 +37,7 @@ public class PlayerControllerScript : MonoBehaviour
     private void Move()
     {
         //오른쪽 이동
+        /*
         if (Input.GetKeyDown(KeyCode.D))
         {
             direction += 1;
@@ -54,8 +55,12 @@ public class PlayerControllerScript : MonoBehaviour
         {
             direction += 1;
         }
+        */
+        direction = Input.GetAxis("Horizontal");
         //바로 이전 속도 값 저장
         float previousSpeed = speed.x * Time.deltaTime;
+        //좌우 반전
+        gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, direction < 0 ? 180f : 0 ,0));
         
         //속도 서서히 변화시켜 주는 기능
         float beforeSpeed = 0; //최댓값 최솟값 고려 안한 상태의 속도 값
