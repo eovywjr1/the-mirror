@@ -58,11 +58,12 @@ public class PlayerControllerScript : MonoBehaviour
         */
         direction = Input.GetAxis("Horizontal");
         //바로 이전 속도 값 저장
-        float previousSpeed = speed.x * Time.deltaTime;
-        //좌우 반전
-        gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, direction < 0 ? 180f : 0 ,0));
+        //float previousSpeed = speed.x * Time.deltaTime;
+
         
+
         //속도 서서히 변화시켜 주는 기능
+        /*
         float beforeSpeed = 0; //최댓값 최솟값 고려 안한 상태의 속도 값
         if (direction == 0)
         {
@@ -78,10 +79,29 @@ public class PlayerControllerScript : MonoBehaviour
             beforeSpeed = speed.x +  (direction * playerAcceleration) * Time.deltaTime; //이동 방향 그대로 가속
             speed.x = Mathf.Clamp(beforeSpeed, -playerMaxSpeed, playerMaxSpeed);
         }
+        
         float newSpeed = (speed.x * Time.deltaTime); //멈췄을 때 미세한 떨림 방지 용도
-        UpdateState(previousSpeed , newSpeed); //속도 계산한것 가지고 state 결정, 아직 속도가 변화 안함
+        */
+        //float newSpeed = direction * playerMaxSpeed;
+        //새로운 속도 계산
+        Vector3 newSpeed = new Vector3(direction,0,0);
+
+        //속도 계산한것 가지고 state 결정, 아직 속도가 변화 안함
+        UpdateState(speed.x , newSpeed.x); 
+
+        //캐릭터 속도 반영
+        transform.position += newSpeed * Time.deltaTime;
+
+        
+
+        /*
         if (Mathf.Abs(newSpeed) >= breakThreshold) 
             gameObject.transform.position += (speed * Time.deltaTime);
+        */
+
+        //기존 속도 업데이트
+        Debug.Log(newSpeed);
+        speed = newSpeed;
         
     }
 
@@ -89,19 +109,24 @@ public class PlayerControllerScript : MonoBehaviour
     void UpdateState(float previousSpeed, float newSpeed)
     {
         float deltaSpeed = Mathf.Abs(newSpeed) - Mathf.Abs(previousSpeed); //속도 크기 차이
-        if (speed.x <= animationBreakThreshold && speed.x >= -animationBreakThreshold)
+        //if (speed.x <= animationBreakThreshold && speed.x >= -animationBreakThreshold)
+        if(newSpeed == 0)
         {
             playerState = 0;
         }
         else if (deltaSpeed < 0)
         {
-            playerState = 2;
+            if(Mathf.Abs(newSpeed) < 1.0f && Mathf.Abs(newSpeed) > 0.0f)
+                playerState = 2;
             
         }
        else //deltaSpeed > 0
         {
             playerState = 1;
-            
+            //방향에 따라 캐릭터 좌우 반전
+            if (Input.GetAxis("Horizontal") != 0)
+                gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, speed.x < 0 ? 180f : 0, 0));
+
         }
 
     }

@@ -491,7 +491,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcec4fc9e2735e84ca058262ec38e0d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerMaxSpeed: 3
+  playerMaxSpeed: 10
   playerAcceleration: 8
   breakThreshold: 0.05
   animationBreakThreshold: 0.3
