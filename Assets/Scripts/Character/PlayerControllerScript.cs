@@ -90,7 +90,7 @@ public class PlayerControllerScript : MonoBehaviour
         UpdateState(speed.x , newSpeed.x); 
 
         //캐릭터 속도 반영
-        transform.position += newSpeed * Time.deltaTime;
+        transform.position += newSpeed * playerMaxSpeed * Time.deltaTime;
 
         
 
@@ -100,7 +100,6 @@ public class PlayerControllerScript : MonoBehaviour
         */
 
         //기존 속도 업데이트
-        Debug.Log(newSpeed);
         speed = newSpeed;
         
     }
