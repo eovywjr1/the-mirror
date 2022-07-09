@@ -4,71 +4,6 @@ using System.Collections.Generic;
 using System.IO;
 using TMPro;
 using UnityEngine;
-public class CSVReader
-{
-
-    const string path = "Assets\\script.CSV";
-    bool isLoaded = false;//파일 로딩 확인
-    int lines = 0;//줄 수 기록
-    //ID는 그냥 csv 파일에만 기록, 불러오지는 않을 예정
-    List<string> names;//캐릭터 이름 목록
-    List<string> contents;//대사 목록
-    
-
-    public CSVReader()
-    {
-        StreamReader reader = new StreamReader(path);
-
-        //인스턴스 생성
-        names = new List<string>();
-        contents = new List<string>();
-
-        string line = reader.ReadLine(); //맨 윗줄 패스
-        line = reader.ReadLine();
-        while(line != null)
-        {
-            string[] items = line.Split(",");
-            names.Add(items[1]);
-            contents.Add(items[2]);
-            line = reader.ReadLine();//이거 없어서 무한반복 발생;;
-            lines++;
-        }
-        isLoaded = true;
-        
-    }
-
-    public int GetLine()
-    {
-        return lines;
-    }
-    public bool CheckInvalidIndex(int index)
-    {
-        if (lines <= index || index < 0)
-        {
-            return true;
-        }
-        else
-            return false;
-    }
-    public string GetName(int index)
-    {
-        if (CheckInvalidIndex(index))
-            return "";
-        return names[index];
-    }
-    public string GetContent(int index)
-    {
-        if (CheckInvalidIndex(index))
-            return "";
-        return contents[index];
-    }
-    public bool IsLoaded()
-    {
-        return isLoaded;
-    }
-
-
-}
 
 
 public class DialogScript : MonoBehaviour
@@ -84,7 +19,8 @@ public class DialogScript : MonoBehaviour
     GameObject speech_bubble_prefab; //말풍선 prefab
 
     SpriteRenderer renderer; //캐릭터 스프라이트
-    
+
+    float axis_celibration = 0.01f; //좌표 보정용
 
 
     CSVReader reader;
@@ -104,7 +40,7 @@ public class DialogScript : MonoBehaviour
     void StartConversation()
     {
         //말풍선 생성
-        Vector3 pos = new Vector3(transform.position.x, transform.position.y + renderer.sprite.rect.size.y/2 + 50, 0);
+        Vector3 pos = new Vector3(transform.position.x, transform.position.y + renderer.sprite.rect.size.y/2 * axis_celibration + 50 * axis_celibration, 0);
         Vector3 rot = new Vector3(0, 0, 0);
         GameObject speech_bubble_object = Instantiate(speech_bubble_prefab, pos, Quaternion.Euler(rot), null);
        
@@ -135,7 +71,7 @@ public class DialogScript : MonoBehaviour
         {
             //캐릭터 이름이 달라질 때 까지 시작
             textMesh.text = script; //대사 출력
-            rectTransform.sizeDelta = new Vector2(CalculateSize(script), 50); //말풍선 계산 수행
+            rectTransform.sizeDelta = new Vector2(CalculateSize(script), 50  * axis_celibration); //말풍선 계산 수행
             for(int i=0; i<speech_bubble_object.transform.childCount; i++)
             {
                 Transform child = speech_bubble_object.transform.GetChild(i); //자식 오브젝트 한개
@@ -148,11 +84,11 @@ public class DialogScript : MonoBehaviour
                 TextMeshProUGUI textbox = speech_bubble_object.transform.GetChild(i).GetComponent<TextMeshProUGUI>();
                 if (textbox) //텍스트 상자가 들어있는 오브젝트일때
                 {
-                    child.GetComponent<RectTransform>().sizeDelta = new Vector2(CalculateSize(script) - 30, 50); //양쪽 여백 15이어야 하므로 30 차감
+                    child.GetComponent<RectTransform>().sizeDelta = new Vector2((CalculateSize(script) - 30) * axis_celibration, 50 * axis_celibration); //양쪽 여백 15이어야 하므로 30 차감
                 }
                 else
                 {
-                    child.GetComponent<RectTransform>().sizeDelta = new Vector2(CalculateSize(script), 50); //말풍선 계산 수행
+                    child.GetComponent<RectTransform>().sizeDelta = new Vector2(CalculateSize(script) * axis_celibration, 50 * axis_celibration); //말풍선 계산 수행
                 }
             }
             yield return new WaitForSeconds(0.2f); //대사 2개 한번에 넘어가는거 방지
@@ -172,7 +108,7 @@ public class DialogScript : MonoBehaviour
     }
 
     //계산 수행하는 함수 필요
-    int CalculateSize(string s)
+    int CalculateSize(string s) //픽셀 단위 계산
     {
         int size = 0;
         char[] values = s.ToCharArray();
