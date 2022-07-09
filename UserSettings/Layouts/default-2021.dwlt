@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PixelRect:
     serializedVersion: 2
+
     x: 0
     y: 43
     width: 2560
@@ -43,6 +44,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 30
+
     width: 2560
     height: 1307
   m_MinSize: {x: 300, y: 200}
@@ -64,6 +66,7 @@ MonoBehaviour:
   m_Children: []
   m_Position:
     serializedVersion: 2
+
     x: 1955
     y: 0
     width: 605
@@ -92,6 +95,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
+
     width: 484
     height: 774
   m_MinSize: {x: 200, y: 200}
@@ -117,6 +121,7 @@ MonoBehaviour:
   m_Position:
     serializedVersion: 2
     x: 0
+
     y: 774
     width: 1955
     height: 533
@@ -148,8 +153,10 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
+
     width: 2560
     height: 1357
+
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
   m_UseTopView: 1
@@ -218,6 +225,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
+
     width: 1955
     height: 1307
   m_MinSize: {x: 200, y: 200}
@@ -243,6 +251,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
+
     width: 1955
     height: 774
   m_MinSize: {x: 200, y: 100}
@@ -259,11 +268,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 1
   m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
+
   m_Name: SceneView
   m_EditorClassIdentifier: 
   m_Children: []
   m_Position:
     serializedVersion: 2
+
     x: 484
     y: 0
     width: 1471
@@ -285,6 +296,7 @@ MonoBehaviour:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
+
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 924ffcbe75518854f97b48776d0f1939, type: 3}
   m_Name: 
@@ -521,6 +533,7 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
+
     x: 0
     y: 847
     width: 1954
