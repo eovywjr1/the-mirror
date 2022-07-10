@@ -57,6 +57,7 @@ public class PlayerControllerScript : MonoBehaviour
         }
         */
         direction = Input.GetAxis("Horizontal");
+
         //바로 이전 속도 값 저장
         //float previousSpeed = speed.x * Time.deltaTime;
 
