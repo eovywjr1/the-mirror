@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ScreenCoordinateCorrector : MonoBehaviour
+public class ScreenCoordinateCorrector
 {
-    private static int pixelPerUnit = 100; //pixelPerUnit 입력
+    private static int pixelPerUnit = 1; //pixelPerUnit 입력
     private float unitPerPixel = 0;
     public ScreenCoordinateCorrector()
     {

@@ -4,8 +4,8 @@ using UnityEngine;
 
 public interface InteractionEvent
 {
-    void Interact(GameObject you, GameObject me);
-    void Approach(GameObject you, GameObject me);
+    void Interact();
+    void Approach();
     void StopInteract();
     
 }

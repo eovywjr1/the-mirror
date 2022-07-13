@@ -9,12 +9,12 @@ public class ConversationInteraction : InteractionEvent
     {
         dialogManager = originDialogManager;
     }
-    public void Approach(GameObject you, GameObject me)
+    public void Approach()
     {
 
     }
 
-    public void Interact(GameObject you, GameObject me)
+    public void Interact()
     {
 
         dialogManager.StartConversation();
@@ -32,7 +32,11 @@ public class ConversationInteractionEventReceiver : MonoBehaviour //상호작용 받�
     public void Awake()
     {
         conversationInteractionClass = new ConversationInteraction(GetComponent<DialogManager>(), gameObject) ;
-        conversationInteractionClass.Interact(gameObject, gameObject);
+        
+    }
+    public void Interact()
+    {
+        conversationInteractionClass.Interact();
     }
         
 }

@@ -28,13 +28,16 @@ public class DialogManager : MonoBehaviour
     public void Awake()
     {
         reader = new CSVReader();
+        
+    }
+    public void Start()
+    {
         renderer = gameObject.GetComponent<SpriteRenderer>();
     }
-    
-        
-        
-   
-        public void BuildSpeechBubbleObject()
+
+
+
+    public void BuildSpeechBubbleObject()
         {
             Vector3 pos = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + (renderer.sprite.rect.size.y * gameObject.transform.localScale.y / 2 + 50) * axis_celibration, 0); //말풍선 높이 설정
             Vector3 rot = new Vector3(0, 0, 0);
