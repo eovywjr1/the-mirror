@@ -31,7 +31,7 @@ public class InventoryScript : MonoBehaviour
                 MovedIndex(selectedList, selectedIndex + 1, selectedIndex, unselectedImage, selectedImage);
             }
         }
-        if (Input.GetKeyDown("a") && moveIndex % 4 > 0! && !selectedItem)
+        if (Input.GetKeyDown("a") && moveIndex > 0 && !selectedItem)
         {
             moveIndex--;
             MovedIndex(itemList, moveIndex + 1, moveIndex, unmovedImage, movedImage);
@@ -47,7 +47,7 @@ public class InventoryScript : MonoBehaviour
                 MovedIndex(selectedList, selectedIndex - 1, selectedIndex, unselectedImage, selectedImage);
             }
         }
-        if (Input.GetKeyDown("d") && moveIndex % 4 < 3 && itemList.Count > moveIndex + 1 && !selectedItem)
+        if (Input.GetKeyDown("d") && itemList.Count > moveIndex + 1 && !selectedItem)
         {
             moveIndex++;
             MovedIndex(itemList, moveIndex - 1, moveIndex, unmovedImage, movedImage);
