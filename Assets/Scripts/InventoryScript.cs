@@ -6,53 +6,55 @@ using UnityEngine.UI;
 public class InventoryScript : MonoBehaviour
 {
     public List<GameObject> itemList, selectedList;
-    public GameObject selected;
+    public GameObject selected3, selected2;
     public int moveIndex, selectedIndex;
+    public Sprite unmovedImage, movedImage, unselectedImage, selectedImage;
+    public bool selectedItem;
 
     void Start()
     {
-        itemList[moveIndex].GetComponent<Image>().color = Color.white;
+        itemList[moveIndex].GetComponent<Image>().sprite = movedImage;
     }
 
     // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown("w")) {
-            if (!selected.activeSelf && moveIndex > 3) {
+            if (!selectedItem && moveIndex > 3) {
             
                 moveIndex -= 4;
-                MovedIndex(itemList, moveIndex + 4, moveIndex);
+                MovedIndex(itemList, moveIndex + 4, moveIndex, unmovedImage, movedImage);
             }
-            else if(selected.activeSelf && selectedIndex != 0)
+            else if(selectedItem && selectedIndex != 0)
             {
                 selectedIndex--;
-                MovedIndex(selectedList, selectedIndex + 1, selectedIndex);
+                MovedIndex(selectedList, selectedIndex + 1, selectedIndex, unselectedImage, selectedImage);
             }
         }
-        if (Input.GetKeyDown("a") && moveIndex % 4 > 0! && !selected.activeSelf)
+        if (Input.GetKeyDown("a") && moveIndex % 4 > 0! && !selectedItem)
         {
             moveIndex--;
-            MovedIndex(itemList, moveIndex + 1, moveIndex);
+            MovedIndex(itemList, moveIndex + 1, moveIndex, unmovedImage, movedImage);
         }
         if (Input.GetKeyDown("s")) {
-            if (!selected.activeSelf && itemList.Count > moveIndex + 4){
+            if (!selectedItem && itemList.Count > moveIndex + 4){
                 moveIndex += 4;
-                MovedIndex(itemList, moveIndex - 4, moveIndex);
+                MovedIndex(itemList, moveIndex - 4, moveIndex, unmovedImage, movedImage);
             }
-            else if (selected.activeSelf && selectedIndex != 2)
+            else if (selectedItem && selectedIndex != 2)
             {
                 selectedIndex++;
-                MovedIndex(selectedList, selectedIndex - 1, selectedIndex);
+                MovedIndex(selectedList, selectedIndex - 1, selectedIndex, unselectedImage, selectedImage);
             }
         }
-        if (Input.GetKeyDown("d") && moveIndex % 4 < 3 && itemList.Count > moveIndex + 1 && !selected.activeSelf)
+        if (Input.GetKeyDown("d") && moveIndex % 4 < 3 && itemList.Count > moveIndex + 1 && !selectedItem)
         {
             moveIndex++;
-            MovedIndex(itemList, moveIndex - 1, moveIndex);
+            MovedIndex(itemList, moveIndex - 1, moveIndex, unmovedImage, movedImage);
         }
         if (Input.GetKeyDown("e"))
         {
-            if (!selected.activeSelf)
+            if (!selectedItem)
                 ActiveSelected();
             else if (selectedIndex == 2)
                 DeactiveSelected();
@@ -61,21 +63,23 @@ public class InventoryScript : MonoBehaviour
 
     void ActiveSelected()
     {
-        selected.SetActive(true);
-        selected.transform.position = new Vector2(itemList[moveIndex].transform.position.x + 215, itemList[moveIndex].transform.position.y - 65);
-        selectedList[0].GetComponent<Image>().color = Color.white;
+        selected3.SetActive(true);
+        selected3.transform.position = new Vector2(itemList[moveIndex].transform.position.x + 215, itemList[moveIndex].transform.position.y - 65);
+        selectedItem = true;
+        selectedList[0].GetComponent<Image>().sprite = selectedImage;
     }
 
     void DeactiveSelected()
     {
-        selectedList[selectedIndex].GetComponent<Image>().color = Color.black;
+        selectedList[selectedIndex].GetComponent<Image>().sprite = unselectedImage;
         selectedIndex = 0;
-        selected.SetActive(false);
+        selectedItem = false;
+        selected3.SetActive(false);
     }
 
-    void MovedIndex(List<GameObject> list, int preIndex, int nextIndex)
+    void MovedIndex(List<GameObject> list, int preIndex, int nextIndex, Sprite unImage, Sprite doImage)
     {
-        list[preIndex].GetComponent<Image>().color = Color.black;
-        list[nextIndex].GetComponent<Image>().color = Color.white;
+        list[preIndex].GetComponent<Image>().sprite = unImage;
+        list[nextIndex].GetComponent<Image>().sprite = doImage;
     }
 }
