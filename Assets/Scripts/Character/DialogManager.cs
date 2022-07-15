@@ -17,13 +17,15 @@ public class DialogManager : MonoBehaviour
         GameObject speech_bubble_prefab; //말풍선 prefab
 
         GameObject speech_bubble_object;
-        static float axis_celibration = 1;
+        static float axis_celibration = 0.015625f; // 1 / ppu
 
         SpriteRenderer renderer; //캐릭터 스프라이트
         bool isTalking = false;
         bool isConversationCourintRunning = false;
 
         CSVReader reader;
+        const float bubbleContentHeight = 40; //말풍선 텍스트 부분 가로크기
+        const float bubbleHeight = 60; //말풍선 세로 크기
 
     public void Awake()
     {
@@ -91,7 +93,7 @@ public class DialogManager : MonoBehaviour
             {
                 //캐릭터 이름이 달라질 때 까지 시작
                 textMesh.text = script; //대사 출력
-                rectTransform.sizeDelta = new Vector2(CalculateSizeInPixel(script), 50) * axis_celibration; //말풍선 계산 수행
+                rectTransform.sizeDelta = new Vector2(CalculateSizeInPixel(script), bubbleHeight) * axis_celibration; //말풍선 계산 수행
                 for (int i = 0; i < speech_bubble_object.transform.childCount; i++)
                 {
                     Transform child = speech_bubble_object.transform.GetChild(i); //자식 오브젝트 한개
@@ -102,17 +104,18 @@ public class DialogManager : MonoBehaviour
                     }
                     Debug.Log(i);
                     TextMeshProUGUI textbox = speech_bubble_object.transform.GetChild(i).GetComponent<TextMeshProUGUI>();
-                    if (textbox) //텍스트 상자가 들어있는 오브젝트일때
-                    {
-                        child.GetComponent<RectTransform>().sizeDelta = new Vector2(CalculateSizeInPixel(script) - 30, 50) * axis_celibration; //양쪽 여백 15이어야 하므로 30 차감
-                    }
-                    else
-                    {
-                        child.GetComponent<RectTransform>().sizeDelta = new Vector2(CalculateSizeInPixel(script), 50) * axis_celibration; //말풍선 계산 수행
-                    }
+                if (textbox) //텍스트 상자가 들어있는 오브젝트일때
+                {
+                    child.GetComponent<RectTransform>().sizeDelta = new Vector2(CalculateSizeInPixel(script) - 30, bubbleContentHeight) * axis_celibration; //양쪽 여백 15이어야 하므로 30 차감
                 }
+                else
+                {
+                    child.GetComponent<RectTransform>().sizeDelta = new Vector2(CalculateSizeInPixel(script), bubbleContentHeight) * axis_celibration; //말풍선 계산 수행
+                }
+                }
+                //대화 종류에 따라 여기서 분기
                 yield return new WaitForSeconds(0.2f); //대사 2개 한번에 넘어가는거 방지
-                while (!Input.GetMouseButtonDown(0)) //버튼 눌릴때까지 기다림
+                while (!Input.GetKeyDown(KeyCode.E)) //버튼 눌릴때까지 기다림
                 {
                     yield return new WaitForSeconds(Time.deltaTime);
                 }

@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class ScreenCoordinateCorrector
 {
-    private static int pixelPerUnit = 1; //pixelPerUnit 입력
+    private static int pixelPerUnit = 64; //pixelPerUnit 입력
     private float unitPerPixel = 0;
     public ScreenCoordinateCorrector()
     {
-        unitPerPixel = 1 / pixelPerUnit;
+        unitPerPixel = 1.0f / pixelPerUnit;
     }
 
     // Start is called before the first frame update

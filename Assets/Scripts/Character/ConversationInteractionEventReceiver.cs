@@ -38,5 +38,9 @@ public class ConversationInteractionEventReceiver : MonoBehaviour //상호작용 받�
     {
         conversationInteractionClass.Interact();
     }
+    public void StopInteract()
+    {
+        conversationInteractionClass.StopInteract();
+    }
         
 }

@@ -19,19 +19,26 @@ public class InteractManageer : MonoBehaviour
         
     }
     
-    public void Interact(int id) //0 : interact
+    public void Interact(int id) //0 : interact 1, 1 : stopInteract
     {
+        if (gameObject == null)
+        {
+            return;
+        }
+        ConversationInteractionEventReceiver conversationInteractionEventReceiver = otherObject.GetComponent<ConversationInteractionEventReceiver>();
         switch (id)
         {
+            
             case 0:
-                if(gameObject == null)
-                {
-                    return;
-                }
-                ConversationInteractionEventReceiver conversationInteractionEventReceiver = otherObject.GetComponent<ConversationInteractionEventReceiver>();
+                
                 if(conversationInteractionEventReceiver != null)
                     conversationInteractionEventReceiver.Interact();
                 break;
+            case 1:
+                if (conversationInteractionEventReceiver != null)
+                    conversationInteractionEventReceiver.StopInteract();
+                break;
+
 
         }
     }
@@ -39,10 +46,11 @@ public class InteractManageer : MonoBehaviour
     {
         
             otherObject = collision.gameObject;
-        Debug.Log("enter");
+        Debug.Log(transform.gameObject.name);
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
+        Interact(1);
             otherObject = null;
         Debug.Log("finish");
     }

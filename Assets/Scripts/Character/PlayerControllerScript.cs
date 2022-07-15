@@ -36,7 +36,7 @@ public class PlayerControllerScript : MonoBehaviour
     {
         corrector = new ScreenCoordinateCorrector();
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-        spriteWidthInUnit = corrector.convertToUnit(spriteRenderer.sprite.rect.size.x);
+        spriteWidthInUnit = corrector.convertToUnit(spriteRenderer.sprite.rect.size.x); 
         spriteHeightInUnit = corrector.convertToUnit(spriteRenderer.sprite.rect.size.y);
         interactor = transform.GetChild(0).gameObject;
         interactManageer = interactor.GetComponent<InteractManageer>();
@@ -68,18 +68,38 @@ public class PlayerControllerScript : MonoBehaviour
         Move(axisHorizontal, axisVertical);
         UpdateAnimationParameter();
         //rotation
-        if(axisHorizontal * axisVertical == 0 || axisHorizontal * previousSpeedX <= 0 || axisVertical * previousSpeedY <= 0)
+        /*
+        if(axisHorizontal * axisVertical == 0 || axisHorizontal * previousSpeedX <= 0 || axisHorizontal * previousSpeedX <= 0)
         {
-            if(axisHorizontal != 0)
+            Debug.Log(axisHorizontal);
+            if(axisHorizontal * previousSpeedX <= 0 && axisHorizontal != 0 || (axisVertical == 0 && axisHorizontal != 0))
             {
+
                 RotateHorizontal(Convert.ToInt32(axisHorizontal / Mathf.Abs(axisHorizontal)));
             }
-            else if(axisVertical != 0)
+            if(axisHorizontal * previousSpeedX <= 0 && axisVertical != 0 || (axisHorizontal == 0 && axisVertical != 0))
             {
                 RotateVertical(Convert.ToInt32(axisVertical / Mathf.Abs(axisVertical)));
             }
             //모두가 0일때는 그냥 플레이어 회전 그대로
         }
+        */
+        
+            float absAxisHorizontal = Mathf.Abs(axisHorizontal);
+            float absAxisVertical = Mathf.Abs(axisVertical);
+            if (absAxisHorizontal > absAxisVertical && axisHorizontal != 0)
+            {
+                Debug.Log("Updated2");
+                RotateHorizontal(Convert.ToInt32(axisHorizontal / Mathf.Abs(axisHorizontal)));
+            }
+            if (absAxisVertical > absAxisHorizontal && axisVertical != 0)
+            {
+                Debug.Log("Updated");
+                RotateVertical(Convert.ToInt32(axisVertical / Mathf.Abs(axisVertical)));
+
+            }
+        
+
         previousSpeedX = axisHorizontal;
         previousSpeedY = axisVertical;
 
@@ -115,14 +135,14 @@ public class PlayerControllerScript : MonoBehaviour
         int index = (int)(0.5 * direction + 0.5f);
         playerAnimationController.runtimeAnimatorController = playerAnimationontrollerList[index];
         //콜라이더 회전
-        interactor.transform.localPosition = new Vector3(0, spriteHeightInUnit / 2 * direction + corrector.convertToUnit(interactor.transform.localScale.y / 2) * direction , 0);
-
+        interactor.transform.localPosition = new Vector3(0, (spriteHeightInUnit / 2  + interactor.transform.localScale.y)*direction , 0);
+       
     }
     void RotateHorizontal(int direction)
     {
         int index = (int)(2 + 0.5 * direction + 0.5f);
         playerAnimationController.runtimeAnimatorController = playerAnimationontrollerList[index];
-        interactor.transform.localPosition = new Vector3(spriteWidthInUnit / 2 * direction + corrector.convertToUnit(interactor.transform.localScale.x / 2) * direction, 0, 0);
+        interactor.transform.localPosition = new Vector3((spriteWidthInUnit / 2   + interactor.transform.localScale.x )*direction, 0, 0);
     }
 
     //속도 계산해서 달리는지, 멈추는 중인지, 멈추는지 상태 표시
