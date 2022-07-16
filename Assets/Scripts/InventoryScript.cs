@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class InventoryScript : MonoBehaviour
 {
     public List<GameObject> itemList, selectedList;
-    public GameObject selected3, selected2;
+    public GameObject selected3, selected2, hp;
     public int moveIndex, selectedIndex;
     public Sprite unmovedImage, movedImage, unselectedImage, selectedImage;
     public bool selectedItem;
@@ -14,6 +14,7 @@ public class InventoryScript : MonoBehaviour
     void Start()
     {
         itemList[moveIndex].GetComponent<Image>().sprite = movedImage;
+        hp.GetComponent<Transform>().SetAsFirstSibling();
     }
 
     // Update is called once per frame

@@ -231,6 +231,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 33777163}
     m_Modifications:
+    - target: {fileID: 1534692754609355076, guid: 91ea61784201be84095fed3a6cc3425f, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2221023042834923093, guid: 91ea61784201be84095fed3a6cc3425f, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3275520538770542079, guid: 91ea61784201be84095fed3a6cc3425f, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -323,7 +331,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Inventory
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7056732677895198878, guid: 91ea61784201be84095fed3a6cc3425f, type: 3}
+    - {fileID: 2812279560814651816, guid: 91ea61784201be84095fed3a6cc3425f, type: 3}
+    - {fileID: 2116828387485964119, guid: 91ea61784201be84095fed3a6cc3425f, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 91ea61784201be84095fed3a6cc3425f, type: 3}
 --- !u!224 &71145155 stripped
 RectTransform:
