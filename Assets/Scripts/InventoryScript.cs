@@ -10,69 +10,113 @@ public class InventoryScript : MonoBehaviour
     public GameObject selected3, selected2, hp;
     public int moveIndex, selectedIndex, pageIndex = 0;
     public Sprite unmovedImage, movedImage, unselectedImage, selectedImage;
-    public bool selectedItem;
+    public bool selectedItem, pageSelected;
 
-    void Start()
+    private void OnEnable()
     {
-        slotList[0].GetComponent<Image>().sprite = movedImage;
+        ChagngeMovedImage(slotList, (moveIndex % 12), 0, unmovedImage, movedImage);
+        moveIndex = 0;
+        pageIndex = 0;
+        PageItemShow();
+    }
+
+    private void Start()
+    {
         hp.GetComponent<Transform>().SetAsFirstSibling();
-        ShowFirstPageItem();
     }
 
-    void Update()
+    private void Update()
     {
-        Moved();
-        Selected();
+        if (!pageSelected)
+        {
+            Selected();
+            if(!selectedItem)
+                ItemMoved();
+            else
+                SelectMoved();
+        }
+        else
+            PageMoved();
     }
 
-    void Moved()
+    //아이템 칸 / select 칸 이동
+    void ItemMoved()
     {
         if (Input.GetKeyDown("w"))
         {
-            if (!selectedItem && moveIndex <= 3)
+            if (moveIndex <= 3)
             {
-                Debug.Log("페이지 선택");
+                pageSelected = true;
+                slotList[moveIndex].GetComponent<Image>().sprite = unmovedImage;
+                //페이지 이미지 변경
             }
-            else if (!selectedItem && moveIndex > 3)
+            else
             {
-                MovedIndex(slotList, (moveIndex % 12), (moveIndex - 4) % 12, unmovedImage, movedImage);
+                ChagngeMovedImage(slotList, (moveIndex % 12), (moveIndex - 4) % 12, unmovedImage, movedImage);
                 moveIndex -= 4;
                 ChangePageItem();
             }
-            else if (selectedItem && selectedIndex != 0)
-            {
-                selectedIndex--;
-                MovedIndex(selectedList, selectedIndex + 1, selectedIndex, unselectedImage, selectedImage);
-            }
         }
-        else if (Input.GetKeyDown("a") && moveIndex > 0 && !selectedItem)
+        else if (Input.GetKeyDown("a") && moveIndex > 0)
         {
-            MovedIndex(slotList, moveIndex % 12, (moveIndex - 1) % 12, unmovedImage, movedImage);
+            ChagngeMovedImage(slotList, moveIndex % 12, (moveIndex - 1) % 12, unmovedImage, movedImage);
             moveIndex--;
             ChangePageItem();
         }
-        else if (Input.GetKeyDown("s"))
+        else if (Input.GetKeyDown("s") && 24 > moveIndex + 4)
         {
-            if (!selectedItem && itemList.Count > moveIndex + 4)
-            {
-                MovedIndex(slotList, moveIndex % 12, (moveIndex + 4) % 12, unmovedImage, movedImage);
-                moveIndex += 4;
-                ChangePageItem();
-            }
-            else if (selectedItem && selectedIndex != 2)
-            {
-                selectedIndex++;
-                MovedIndex(selectedList, selectedIndex - 1, selectedIndex, unselectedImage, selectedImage);
-            }
+            ChagngeMovedImage(slotList, moveIndex % 12, (moveIndex + 4) % 12, unmovedImage, movedImage);
+            moveIndex += 4;
+            ChangePageItem();
         }
-        else if (Input.GetKeyDown("d") && itemList.Count > moveIndex + 1 && !selectedItem)
+        else if (Input.GetKeyDown("d") && 24 > moveIndex + 1)
         {
-            MovedIndex(slotList, moveIndex % 12, (moveIndex + 1) % 12, unmovedImage, movedImage);
+            ChagngeMovedImage(slotList, moveIndex % 12, (moveIndex + 1) % 12, unmovedImage, movedImage);
             moveIndex++;
             ChangePageItem();
         }
     }
 
+    //아이템 상호작용 창 이동
+    void SelectMoved()
+    {
+        if (Input.GetKeyDown("w") && selectedIndex != 0)
+        {
+            selectedIndex--;
+            ChagngeMovedImage(selectedList, selectedIndex + 1, selectedIndex, unselectedImage, selectedImage);
+        }
+        else if (Input.GetKeyDown("s") && selectedIndex != 2)
+        {
+            selectedIndex++;
+            ChagngeMovedImage(selectedList, selectedIndex - 1, selectedIndex, unselectedImage, selectedImage);
+        }
+    }
+
+    //페이지 이동
+    void PageMoved()
+    {
+        if (Input.GetKeyDown("a") && pageIndex > 0)
+        {
+            //페이지 이미지 변경
+            pageIndex--;
+            PageItemShow();
+        }
+        else if (Input.GetKeyDown("d") && pageIndex == 0)
+        {
+            //페이지 이미지 변경
+            pageIndex++;
+            PageItemShow();
+        }
+        else if (Input.GetKeyDown("s"))
+        {
+            //페이지 이미지 변경
+            pageSelected = false;
+            moveIndex = pageIndex * 12;
+            slotList[moveIndex % 12].GetComponent<Image>().sprite = movedImage;
+        }
+    }
+
+    //인벤토리 상호작용
     void Selected()
     {
         if (Input.GetKeyDown("e"))
@@ -84,6 +128,7 @@ public class InventoryScript : MonoBehaviour
         }
     }
 
+    //select 창 생성
     void ActiveSelected()
     {
         selected3.SetActive(true);
@@ -92,6 +137,7 @@ public class InventoryScript : MonoBehaviour
         selectedList[0].GetComponent<Image>().sprite = selectedImage;
     }
 
+    //select 창 제거
     void DeactiveSelected()
     {
         selectedList[selectedIndex].GetComponent<Image>().sprite = unselectedImage;
@@ -100,30 +146,32 @@ public class InventoryScript : MonoBehaviour
         selected3.SetActive(false);
     }
 
-    void MovedIndex(List<GameObject> list, int preIndex, int nextIndex, Sprite unImage, Sprite doImage)
+    //칸 이동할 때 이미지 변경
+    void ChagngeMovedImage(List<GameObject> list, int preIndex, int nextIndex, Sprite unImage, Sprite doImage)
     {
         list[preIndex].GetComponent<Image>().sprite = unImage;
         list[nextIndex].GetComponent<Image>().sprite = doImage;
     }
 
-    void ShowFirstPageItem()
-    {
-        for (int i = 0; i < 12 && i < itemList.Count; i++)
-            slotList[i].transform.GetChild(0).GetComponent<InventorySlot>().item = itemList[i];
-    }
-
+    //페이지 변경 확인
     void ChangePageItem()
     {
         if(pageIndex != moveIndex / 12)
         {
             pageIndex = moveIndex / 12;
-
-            int i, j;
-            for (i = pageIndex * 12, j = 0; i < pageIndex * 12 + 12 && i < itemList.Count; i++, j++)
-                slotList[j].transform.GetChild(0).GetComponent<InventorySlot>().item = itemList[i];
-
-            for (; j < 12; j++)
-                slotList[j].transform.GetChild(0).GetComponent<InventorySlot>().item = null;
+            PageItemShow();
         }
+    }
+
+
+    //페이지의 아이템 보여주기
+    void PageItemShow()
+    {
+        int i, j;
+        for (i = pageIndex * 12, j = 0; i < pageIndex * 12 + 12 && i < itemList.Count; i++, j++)
+            slotList[j].transform.GetChild(0).GetComponent<InventorySlot>().item = itemList[i];
+
+        for (; j < 12; j++)
+            slotList[j].transform.GetChild(0).GetComponent<InventorySlot>().item = null;
     }
 }
