@@ -39,7 +39,7 @@ public class InventoryScript : MonoBehaviour
             PageMoved();
     }
 
-    //æ∆¿Ã≈€ ƒ≠ / select ƒ≠ ¿Ãµø
+    //æ∆¿Ã≈€ ƒ≠ ¿Ãµø
     void ItemMoved()
     {
         if (Input.GetKeyDown("w"))
@@ -122,7 +122,10 @@ public class InventoryScript : MonoBehaviour
         if (Input.GetKeyDown("e"))
         {
             if (!selectedItem)
-                ActiveSelected();
+            {
+                if (slotList[moveIndex % 12].transform.GetChild(0).GetComponent<InventorySlot>().item != null)
+                    ActiveSelected();
+            }
             else if (selectedIndex == 2)
                 DeactiveSelected();
         }
@@ -132,7 +135,7 @@ public class InventoryScript : MonoBehaviour
     void ActiveSelected()
     {
         selected3.SetActive(true);
-        selected3.transform.position = new Vector2(slotList[moveIndex].transform.position.x + 215, slotList[moveIndex].transform.position.y - 65);
+        selected3.transform.position = new Vector2(slotList[moveIndex % 12].transform.position.x + 215, slotList[moveIndex % 12].transform.position.y - 65);
         selectedItem = true;
         selectedList[0].GetComponent<Image>().sprite = selectedImage;
     }
