@@ -31,8 +31,7 @@ public class ConversationInteractionEventReceiver : MonoBehaviour //상호작용 받�
     ConversationInteraction conversationInteractionClass;
     public void Awake()
     {
-        conversationInteractionClass = new ConversationInteraction(GetComponent<DialogManager>(), gameObject) ;
-        
+        conversationInteractionClass = new ConversationInteraction(GetComponent<DialogManager>(), gameObject);
     }
     public void Interact()
     {

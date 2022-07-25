@@ -15,8 +15,9 @@ public class DialogManager : MonoBehaviour
 
         [SerializeField]
         GameObject speech_bubble_prefab; //말풍선 prefab
+        [SerializeField] GameObject selected_Prefab;
 
-        GameObject speech_bubble_object;
+    GameObject speech_bubble_object;
         static float axis_celibration = 0.015625f; // 1 / ppu
 
         SpriteRenderer renderer; //캐릭터 스프라이트
@@ -44,7 +45,9 @@ public class DialogManager : MonoBehaviour
             Vector3 pos = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + (renderer.sprite.rect.size.y * gameObject.transform.localScale.y / 2 + 50) * axis_celibration, 0); //말풍선 높이 설정
             Vector3 rot = new Vector3(0, 0, 0);
             speech_bubble_object = Instantiate(speech_bubble_prefab, pos, Quaternion.Euler(rot), null);
-        }
+            if(selected_Prefab != null)
+                Instantiate(selected_Prefab, new Vector3(transform.position.x + 2.12578f, transform.position.y + 2, 0), Quaternion.identity);
+    }
         public void StartConversation()
         {
             if (isTalking)
@@ -87,7 +90,6 @@ public class DialogManager : MonoBehaviour
             index -= 1; //실제로는 첫번째 원소가 ID 1 이므로 id에서 하나 빼서 저장할 예정
 
             string script = reader.GetContent(index);
-
 
             while (script != "" && reader.GetName(index) == name)
             {
@@ -151,6 +153,9 @@ public class DialogManager : MonoBehaviour
             }
             return size;
         }
+    
+    public void SetId(int _id)
+    {
+        id = _id;
     }
-
-
+}
