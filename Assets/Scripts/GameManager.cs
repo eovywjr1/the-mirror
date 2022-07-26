@@ -5,17 +5,11 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    GameObject inventory;
+    public GameObject inventory;
 
-    void Start()
-    {
-        inventory = FindObjectOfType<InventoryScript>().gameObject;    
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown("i"))
+        if (inventory != null && Input.GetKeyDown("i"))
             inventory.SetActive(!inventory.activeSelf);
     }
 }

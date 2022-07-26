@@ -29,6 +29,7 @@ public class PlayerControllerScript : MonoBehaviour
     float spriteWidthInUnit;
     float spriteHeightInUnit;
 
+    public bool isImpossibleMove;
 
 
     // Start is called before the first frame update
@@ -55,36 +56,40 @@ public class PlayerControllerScript : MonoBehaviour
 
     private void ProcessInteractEvent()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) && !isImpossibleMove)
         {
             interactManageer.Interact(0);
+            playerAnimationController.SetInteger("state", 0);
+            isImpossibleMove = true;
         }
     }
 
     private void FixedUpdate()
     {
-        float axisHorizontal = Input.GetAxis("Horizontal");
-        float axisVertical = Input.GetAxis("Vertical");
-        Move(axisHorizontal, axisVertical);
-        UpdateAnimationParameter();
-        //rotation
-        /*
-        if(axisHorizontal * axisVertical == 0 || axisHorizontal * previousSpeedX <= 0 || axisHorizontal * previousSpeedX <= 0)
+        if (!isImpossibleMove)
         {
-            Debug.Log(axisHorizontal);
-            if(axisHorizontal * previousSpeedX <= 0 && axisHorizontal != 0 || (axisVertical == 0 && axisHorizontal != 0))
+            float axisHorizontal = Input.GetAxis("Horizontal");
+            float axisVertical = Input.GetAxis("Vertical");
+            Move(axisHorizontal, axisVertical);
+            UpdateAnimationParameter();
+            //rotation
+            /*
+            if(axisHorizontal * axisVertical == 0 || axisHorizontal * previousSpeedX <= 0 || axisHorizontal * previousSpeedX <= 0)
             {
+                Debug.Log(axisHorizontal);
+                if(axisHorizontal * previousSpeedX <= 0 && axisHorizontal != 0 || (axisVertical == 0 && axisHorizontal != 0))
+                {
 
-                RotateHorizontal(Convert.ToInt32(axisHorizontal / Mathf.Abs(axisHorizontal)));
+                    RotateHorizontal(Convert.ToInt32(axisHorizontal / Mathf.Abs(axisHorizontal)));
+                }
+                if(axisHorizontal * previousSpeedX <= 0 && axisVertical != 0 || (axisHorizontal == 0 && axisVertical != 0))
+                {
+                    RotateVertical(Convert.ToInt32(axisVertical / Mathf.Abs(axisVertical)));
+                }
+                //모두가 0일때는 그냥 플레이어 회전 그대로
             }
-            if(axisHorizontal * previousSpeedX <= 0 && axisVertical != 0 || (axisHorizontal == 0 && axisVertical != 0))
-            {
-                RotateVertical(Convert.ToInt32(axisVertical / Mathf.Abs(axisVertical)));
-            }
-            //모두가 0일때는 그냥 플레이어 회전 그대로
-        }
-        */
-        
+            */
+
             float absAxisHorizontal = Mathf.Abs(axisHorizontal);
             float absAxisVertical = Mathf.Abs(axisVertical);
             if (absAxisHorizontal > absAxisVertical && axisHorizontal != 0)
@@ -98,10 +103,11 @@ public class PlayerControllerScript : MonoBehaviour
                 RotateVertical(Convert.ToInt32(axisVertical / Mathf.Abs(axisVertical)));
 
             }
-        
 
-        previousSpeedX = axisHorizontal;
-        previousSpeedY = axisVertical;
+
+            previousSpeedX = axisHorizontal;
+            previousSpeedY = axisVertical;
+        }
 
     }
     //입력 받아서 플레이어 움직이는 함수 (속도 좌표에 더하는 방식으로 할것)

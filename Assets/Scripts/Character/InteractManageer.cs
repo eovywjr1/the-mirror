@@ -25,7 +25,19 @@ public class InteractManageer : MonoBehaviour
         {
             return;
         }
-        ConversationInteractionEventReceiver conversationInteractionEventReceiver = otherObject.GetComponent<ConversationInteractionEventReceiver>();
+
+        ConversationInteractionEventReceiver conversationInteractionEventReceiver;
+
+        if (otherObject.gameObject.name.Equals("Bed"))
+        {
+            GameObject character = transform.parent.gameObject;
+
+            conversationInteractionEventReceiver = character.GetComponent<ConversationInteractionEventReceiver>();
+            character.GetComponent<DialogManager>().SetId(6);
+        }
+        else
+            conversationInteractionEventReceiver = otherObject.GetComponent<ConversationInteractionEventReceiver>();
+        
         switch (id)
         {
             
@@ -44,9 +56,9 @@ public class InteractManageer : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        
-            otherObject = collision.gameObject;
+        otherObject = collision.gameObject;
         Debug.Log(transform.gameObject.name);
+        Debug.Log(otherObject.gameObject.name);
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
