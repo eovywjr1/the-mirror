@@ -9,6 +9,8 @@ public class PlayerControllerScript : MonoBehaviour
     [SerializeField]
     float playerMaxSpeed;               // 플레이어가 최대로 내는 속도
     [SerializeField]
+    float shiftMultiplyRate;            //쉬프트 누르면 몇배로 빨라지는가?
+    [SerializeField]
     float playerAcceleration;           // 민첩도? 플레이어 이동 가속도
     int playerState = 0;                // 애니메이션에 넣기 위한 플레이어 움직임 상태
     Vector3 speed;                      // 플레이어 현재속도
@@ -26,6 +28,7 @@ public class PlayerControllerScript : MonoBehaviour
     InteractManageer interactManageer;//상호작용 스크립트
     float previousSpeedX = 0.0f;//이전 가로 속도
     float previousSpeedY = 0.0f;//이전 가로 속도
+    bool isShiftPressed = false; //만약 달리는 도중 특정 행동을 할 수 없을 때에 대비
     float spriteWidthInUnit;
     float spriteHeightInUnit;
 
@@ -45,12 +48,14 @@ public class PlayerControllerScript : MonoBehaviour
     {
         speed = new Vector3(0, 0, 0);
         playerAnimationController = GetComponent<Animator>();
+        
     }
 
     // Update is called once per frame
     void Update()
     {
         ProcessInteractEvent();
+        isShiftPressed = Input.GetKey(KeyCode.LeftShift);
     }
 
     private void ProcessInteractEvent()
@@ -119,13 +124,15 @@ public class PlayerControllerScript : MonoBehaviour
 
         //캐릭터 속도 반영
         transform.position += newSpeed * playerMaxSpeed * Time.deltaTime;
+        if (isShiftPressed)
+            transform.position += newSpeed * playerMaxSpeed * Time.deltaTime * (Convert.ToInt16(isShiftPressed) * shiftMultiplyRate);
 
         /*
         if (Mathf.Abs(newSpeed) >= breakThreshold) 
             gameObject.transform.position += (speed * Time.deltaTime);
         */
 
-        //기존 속도 업데이트
+            //기존 속도 업데이트
         speed = newSpeed;
         
     }
