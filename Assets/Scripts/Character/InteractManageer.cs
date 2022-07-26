@@ -33,7 +33,7 @@ public class InteractManageer : MonoBehaviour
             GameObject character = transform.parent.gameObject;
 
             conversationInteractionEventReceiver = character.GetComponent<ConversationInteractionEventReceiver>();
-            character.GetComponent<DialogManager>().SetId(5);
+            character.GetComponent<DialogManager>().SetId(6);
         }
         else
             conversationInteractionEventReceiver = otherObject.GetComponent<ConversationInteractionEventReceiver>();

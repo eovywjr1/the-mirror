@@ -1401,6 +1401,7 @@ MonoBehaviour:
   - {fileID: 9100000, guid: 13086f48104d67a4fbbdbc2f2c8cc50a, type: 2}
   breakThreshold: 0.05
   animationBreakThreshold: 0.3
+  isImpossibleMove: 0
 --- !u!95 &1978542740
 Animator:
   serializedVersion: 4
@@ -1513,7 +1514,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b19d53bef81ff11479e0bdce3305dd87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 5
+  id: 6
   name: "\uCE90\uB9AD\uD130"
   speech_bubble_prefab: {fileID: 8637874343786693755, guid: 5651e3f4208cf4f478a178d5599da600, type: 3}
   selected_Prefab: {fileID: 4514419884897556353, guid: 54de27e952442454d83971af2e68be60, type: 3}
