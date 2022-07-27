@@ -12,7 +12,6 @@ public class PlayerControllerScript : MonoBehaviour
     float shiftMultiplyRate;            //쉬프트 누르면 몇배로 빨라지는가?
     [SerializeField]
     float playerAcceleration;           // 민첩도? 플레이어 이동 가속도
-    int playerState = 0;                // 애니메이션에 넣기 위한 플레이어 움직임 상태
     Vector3 speed;                      // 플레이어 현재속도
     float directionX = 0;                  // 가로 움직이는 방향
     float directionY = 0;               //세로 움직이는 방향
@@ -31,6 +30,9 @@ public class PlayerControllerScript : MonoBehaviour
     bool isShiftPressed = false; //만약 달리는 도중 특정 행동을 할 수 없을 때에 대비
     float spriteWidthInUnit;
     float spriteHeightInUnit;
+
+    int playerState = 0;                // 애니메이션에 넣기 위한 플레이어 움직임 상태
+    public int day = 1;
 
     public bool isImpossibleMove;
 
