@@ -44,6 +44,7 @@ public class PlayerControllerScript : MonoBehaviour
         spriteHeightInUnit = corrector.convertToUnit(spriteRenderer.sprite.rect.size.y);
         interactor = transform.GetChild(0).gameObject;
         interactManageer = interactor.GetComponent<InteractManageer>();
+        
     }
     void Start()
     {
@@ -61,7 +62,7 @@ public class PlayerControllerScript : MonoBehaviour
 
     private void ProcessInteractEvent()
     {
-        if (Input.GetKeyDown(KeyCode.E) && !isImpossibleMove)
+        if (Input.GetKeyDown(KeyCode.E) && !isImpossibleMove && gameObject.tag == "Player")
         {
             interactManageer.Interact(0);
             playerAnimationController.SetInteger("state", 0);
@@ -129,16 +130,17 @@ public class PlayerControllerScript : MonoBehaviour
         UpdateState(speed.x , newSpeed.x,speed.y, newSpeed.y); 
 
         //캐릭터 속도 반영
-        transform.position += newSpeed * playerMaxSpeed * Time.deltaTime;
+        
         if (isShiftPressed)
             transform.position += newSpeed * playerMaxSpeed * Time.deltaTime * (Convert.ToInt16(isShiftPressed) * shiftMultiplyRate);
-
+        else
+            transform.position += newSpeed * playerMaxSpeed * Time.deltaTime;
         /*
         if (Mathf.Abs(newSpeed) >= breakThreshold) 
             gameObject.transform.position += (speed * Time.deltaTime);
         */
 
-            //기존 속도 업데이트
+        //기존 속도 업데이트
         speed = newSpeed;
         
     }

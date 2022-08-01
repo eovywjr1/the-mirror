@@ -44,8 +44,8 @@ public class SineNoiseGenerator : MonoBehaviour
             noise = Random.Range(-noiseAmplitude, noiseAmplitude);
             lastUpdatedTime = t / time;
         }
-        output = Mathf.Sin(t / time) * noise + offset;
-        light.intensity = output * System.Convert.ToInt16(lightOn);
+        output = (Mathf.Sin(t / time) * noise + offset) * System.Convert.ToInt16(lightOn);
+        light.intensity = output;
         t += 1;
     }
     void toggleLight()
@@ -63,5 +63,9 @@ public class SineNoiseGenerator : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         toggleable = true;
 
+    }
+    public float getOutput()
+    {
+        return output;
     }
 }
