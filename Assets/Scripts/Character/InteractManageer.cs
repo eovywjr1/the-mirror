@@ -57,13 +57,10 @@ public class InteractManageer : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         otherObject = collision.gameObject;
-        Debug.Log(transform.gameObject.name);
-        Debug.Log(otherObject.gameObject.name);
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
         Interact(1);
             otherObject = null;
-        Debug.Log("finish");
     }
 }
