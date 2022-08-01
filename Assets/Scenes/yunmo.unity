@@ -157,10 +157,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 4
-  index: 0
   name: "\uC0C1\uC8FC\uC694\uC6D02"
   speech_bubble_prefab: {fileID: 8637874343786693755, guid: 5651e3f4208cf4f478a178d5599da600, type: 3}
-  selected_Prefab: {fileID: 0}
 --- !u!114 &71247807
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -410,10 +408,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79951bcc7a8d53b4dbf1d693b9cc2371, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amplitude: 0.25
+  amplitude: 1
   noiseAmplitude: 0.4
   time: 100
-  offset: 0.3
+  offset: 0.5
 --- !u!1 &531352268
 GameObject:
   m_ObjectHideFlags: 0
@@ -765,7 +763,6 @@ MonoBehaviour:
   - {fileID: 9100000, guid: 13086f48104d67a4fbbdbc2f2c8cc50a, type: 2}
   breakThreshold: 0.05
   animationBreakThreshold: 0.3
-  isImpossibleMove: 0
 --- !u!95 &761915816
 Animator:
   serializedVersion: 4
@@ -1520,10 +1517,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 1
-  index: 0
   name: "\uC0C1\uC8FC\uC694\uC6D01"
   speech_bubble_prefab: {fileID: 8637874343786693755, guid: 5651e3f4208cf4f478a178d5599da600, type: 3}
-  selected_Prefab: {fileID: 0}
 --- !u!1 &1914772583
 GameObject:
   m_ObjectHideFlags: 0
