@@ -64,4 +64,9 @@ public class SineNoiseGenerator : MonoBehaviour
         toggleable = true;
 
     }
+    public float getOutput()
+    {
+        return output* System.Convert.ToInt16(lightOn);
+    }
+
 }
