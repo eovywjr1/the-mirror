@@ -180,7 +180,10 @@ public class PlayerControllerScript : MonoBehaviour
         }
        else //deltaSpeed > 0
         {
-            playerState = 1;
+            if (isShiftPressed)
+                playerState = 3;
+            else
+                playerState = 1;
             //방향에 따라 캐릭터 좌우 반전
             //if (Input.GetAxis("Horizontal") != 0)
             //    gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, speed.x < 0 ? 180f : 0, 0));
