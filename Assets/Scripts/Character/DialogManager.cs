@@ -117,7 +117,7 @@ public class DialogManager : MonoBehaviour
             }
             //대화 종류에 따라 여기서 분기
             if (selected_Prefab != null && index == 5)  //침대 선택 창 생성
-                Instantiate(selected_Prefab, new Vector3(transform.position.x + 2.12578f, transform.position.y + 2, 0), Quaternion.identity);
+                Instantiate(selected_Prefab, new Vector3(transform.position.x + 2.12578f, transform.position.y + 2.15f, 0), Quaternion.identity);
 
             yield return new WaitForSeconds(0.05f); //대사 2개 한번에 넘어가는거 방지
             while (!Input.GetKeyDown(KeyCode.E) && !Input.GetKeyDown(KeyCode.Return)) //버튼 눌릴때까지 기다림
