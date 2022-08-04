@@ -40,8 +40,6 @@ public class DialogManager : MonoBehaviour
         renderer = gameObject.GetComponent<SpriteRenderer>();
     }
 
-
-
     public void BuildSpeechBubbleObject()
     {
         Vector3 pos = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + (renderer.sprite.rect.size.y * gameObject.transform.localScale.y / 2 + 50) * axis_celibration, 0); //말풍선 높이 설정
@@ -67,7 +65,6 @@ public class DialogManager : MonoBehaviour
         if (!isTalking)
             return;
 
-
         if (isConversationCourintRunning)
         {
             StopCoroutine(Conversation(speech_bubble_object));
@@ -89,12 +86,9 @@ public class DialogManager : MonoBehaviour
 
         string script = reader.GetContent(index);
 
-        while (script != "" && reader.GetName(index) == name)
+        while (script != "" && reader.GetName(index) == name)   //캐릭터 이름이 달라질 때 까지 시작
         {
-            //캐릭터 이름이 달라질 때 까지 시작
-            textMesh.text = script; //대사 출력
             rectTransform.sizeDelta = new Vector2(CalculateSizeInPixel(script), bubbleHeight) * axis_celibration; //말풍선 계산 수행
-
             for (int i = 0; i < speech_bubble_object.transform.childCount; i++)
             {
                 Transform child = speech_bubble_object.transform.GetChild(i); //자식 오브젝트 한개
@@ -104,7 +98,6 @@ public class DialogManager : MonoBehaviour
                 {
                     continue;
                 }
-                Debug.Log(i);
                 TextMeshProUGUI textbox = speech_bubble_object.transform.GetChild(i).GetComponent<TextMeshProUGUI>();
                 if (textbox) //텍스트 상자가 들어있는 오브젝트일때
                 {
@@ -115,9 +108,17 @@ public class DialogManager : MonoBehaviour
                     child.GetComponent<RectTransform>().sizeDelta = new Vector2(CalculateSizeInPixel(script), bubbleContentHeight) * axis_celibration; //말풍선 계산 수행
                 }
             }
+
+            textMesh.text = "";
+            for (int i = 0; i < script.Length; i++) //대사 타자처럼 출력
+            {
+                textMesh.text += script[i];
+                yield return new WaitForSecondsRealtime(0.2f);
+            }
+
             //대화 종류에 따라 여기서 분기
             if (selected_Prefab != null && index == 5)  //침대 선택 창 생성
-                Instantiate(selected_Prefab, new Vector3(transform.position.x + 2.12578f, transform.position.y + 2, 0), Quaternion.identity);
+                Instantiate(selected_Prefab, new Vector3(transform.position.x + 2f, transform.position.y + 2.15f, 0), Quaternion.identity);
 
             yield return new WaitForSeconds(0.05f); //대사 2개 한번에 넘어가는거 방지
             while (!Input.GetKeyDown(KeyCode.E) && !Input.GetKeyDown(KeyCode.Return)) //버튼 눌릴때까지 기다림
@@ -150,10 +151,10 @@ public class DialogManager : MonoBehaviour
 
             int value = Convert.ToInt32(c);
             if (value >= 0x80)
-                size += 20;
+                size += 15;
             else
             {
-                size += 7;
+                size += 5;
             }
 
         }

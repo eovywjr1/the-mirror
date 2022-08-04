@@ -687,6 +687,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventory: {fileID: 790335109}
+  day: 1
 --- !u!4 &1520598281
 Transform:
   m_ObjectHideFlags: 0
@@ -695,7 +696,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1520598279}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 825.0726, y: 521.76886, z: -6.2145004}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -862,7 +863,6 @@ MonoBehaviour:
   - {fileID: 9100000, guid: 13086f48104d67a4fbbdbc2f2c8cc50a, type: 2}
   breakThreshold: 0.05
   animationBreakThreshold: 0.3
-  day: 1
   isImpossibleMove: 0
 --- !u!95 &1978542740
 Animator:

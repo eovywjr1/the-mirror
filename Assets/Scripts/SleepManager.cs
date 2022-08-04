@@ -71,7 +71,7 @@ public class SleepManager : SelecteMoveScript
             yield return new WaitForSeconds(0.1f);
         }
 
-        image.sprite = dayImageList[++FindObjectOfType<PlayerControllerScript>().day - 2];
+        image.sprite = dayImageList[++FindObjectOfType<GameManager>().day - 2];
         image.color = new Color(1, 1, 1, 1);
 
         StartCoroutine(DeleteDayImage());
