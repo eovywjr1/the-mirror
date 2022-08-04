@@ -32,10 +32,8 @@ public class PlayerControllerScript : MonoBehaviour
     float spriteHeightInUnit;
 
     int playerState = 0;                // 애니메이션에 넣기 위한 플레이어 움직임 상태
-    public int day = 1;
 
     public bool isImpossibleMove;
-
 
     // Start is called before the first frame update
     private void Awake()
