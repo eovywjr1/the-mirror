@@ -113,7 +113,7 @@ public class DialogManager : MonoBehaviour
             for (int i = 0; i < script.Length; i++) //대사 타자처럼 출력
             {
                 textMesh.text += script[i];
-                yield return new WaitForSecondsRealtime(0.2f);
+                yield return new WaitForSecondsRealtime(0.1f);
             }
 
             //대화 종류에 따라 여기서 분기
@@ -151,7 +151,7 @@ public class DialogManager : MonoBehaviour
 
             int value = Convert.ToInt32(c);
             if (value >= 0x80)
-                size += 15;
+                size += 17;
             else
             {
                 size += 5;

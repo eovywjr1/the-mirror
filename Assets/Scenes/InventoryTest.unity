@@ -789,7 +789,7 @@ GameObject:
   - component: {fileID: 1978542743}
   m_Layer: 6
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 64
@@ -854,7 +854,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerMaxSpeed: 3
-  shiftMultiplyRate: 0
+  shiftMultiplyRate: 2
   playerAcceleration: 8
   playerAnimationontrollerList:
   - {fileID: 9100000, guid: 0956b0d395a71ff438d2eecf0e87bd0a, type: 2}
@@ -863,6 +863,7 @@ MonoBehaviour:
   - {fileID: 9100000, guid: 13086f48104d67a4fbbdbc2f2c8cc50a, type: 2}
   breakThreshold: 0.05
   animationBreakThreshold: 0.3
+  playerState: 0
   isImpossibleMove: 0
 --- !u!95 &1978542740
 Animator:

@@ -31,7 +31,7 @@ public class PlayerControllerScript : MonoBehaviour
     float spriteWidthInUnit;
     float spriteHeightInUnit;
 
-    int playerState = 0;                // 애니메이션에 넣기 위한 플레이어 움직임 상태
+    [SerializeField] int playerState = 0;                // 애니메이션에 넣기 위한 플레이어 움직임 상태
 
     public bool isImpossibleMove;
 
@@ -50,7 +50,6 @@ public class PlayerControllerScript : MonoBehaviour
     {
         speed = new Vector3(0, 0, 0);
         playerAnimationController = GetComponent<Animator>();
-        
     }
 
     // Update is called once per frame
@@ -109,7 +108,6 @@ public class PlayerControllerScript : MonoBehaviour
                 RotateVertical(Convert.ToInt32(axisVertical / Mathf.Abs(axisVertical)));
 
             }
-
 
             previousSpeedX = axisHorizontal;
             previousSpeedY = axisVertical;

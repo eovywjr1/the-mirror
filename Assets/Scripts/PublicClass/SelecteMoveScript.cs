@@ -31,7 +31,7 @@ public class SelecteMoveScript : MonoBehaviour
             if (index == -1)
             {
                 index = 0;
-                ChangePanel(index, index);
+                //ChangePanel(index, index);
             }
             else if (index < maxIndex)
                 ChangePanel(index, ++index);
@@ -49,7 +49,7 @@ public class SelecteMoveScript : MonoBehaviour
     //color는 나중에 이미지로 바꿀 예정입니다.
     public void ChangePanel(int preIndex, int index)
     {
-        panelList[preIndex].color = new Color(0.23f, 0.23f, 0.7f); //unselectedimage
-        panelList[index].color = new Color(1, 1, 1);    //selectedimage
+        if (panelList[preIndex] != null) panelList[preIndex].color = new Color(0.23f, 0.23f, 0.7f); //unselectedimage
+        if (panelList[preIndex] != null) panelList[index].color = new Color(1, 1, 1);    //selectedimage
     }
 }
