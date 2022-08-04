@@ -44,3 +44,6 @@ TagManager:
   - name: Hp
     uniqueID: 2199166403
     locked: 0
+  - name: Player
+    uniqueID: 3480891405
+    locked: 0
