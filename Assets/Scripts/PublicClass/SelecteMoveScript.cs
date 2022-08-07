@@ -14,9 +14,11 @@ public class SelecteMoveScript : MonoBehaviour
         index = -1;
     }
 
-    public void Move(int maxIndex)
+    //override
+    public virtual void Move(int maxIndex)
     {
-        if (Input.GetKeyDown("w"))
+        
+         if (Input.GetKeyDown("w"))
         {
             if (index == -1)
             {
@@ -25,6 +27,7 @@ public class SelecteMoveScript : MonoBehaviour
             }
             else if (index > 0)
                 ChangePanel(index, --index);
+            Debug.Log("w");
         }
         if (Input.GetKeyDown("s"))
         {
@@ -36,6 +39,7 @@ public class SelecteMoveScript : MonoBehaviour
             else if (index < maxIndex)
                 ChangePanel(index, ++index);
         }
+         
     }
 
     //override해서 사용하시면 됩니다.

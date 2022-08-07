@@ -5,10 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class TitleScript : MonoBehaviour
 {
-    void Start()
-    {
-
-    }
     public void StartGame()//게임 실행
     {
         Debug.Log("게임 실행");
