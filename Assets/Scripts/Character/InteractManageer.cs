@@ -6,6 +6,7 @@ public class InteractManageer : MonoBehaviour
 {
     GameObject otherObject; //상호작용 가능한 상대 오브젝트, 없으면 null
     //bool interactable = false; //스크립트 달려있어도 상호작용 불가할경우 -> 추후 구현 예정
+
     // Start is called before the first frame update
     void Start()
     {
