@@ -21,10 +21,13 @@ public class PlayerControllerScript : MonoBehaviour
     float breakThreshold;               // 이 속도 이하면 아예 멈춤
     [SerializeField]
     float animationBreakThreshold;      //에니매이션에 해당
+
     Animator playerAnimationController; //걸음걸이 애니메이션 컨트롤러
     ScreenCoordinateCorrector corrector; //좌표 보정용
     GameObject interactor; //상호작용 범위 콜라이더
     InteractManageer interactManageer;//상호작용 스크립트
+    SpriteRenderer spriteRenderer;
+
     float previousSpeedX = 0.0f;//이전 가로 속도
     float previousSpeedY = 0.0f;//이전 가로 속도
     bool isShiftPressed = false; //만약 달리는 도중 특정 행동을 할 수 없을 때에 대비
@@ -39,7 +42,7 @@ public class PlayerControllerScript : MonoBehaviour
     private void Awake()
     {
         corrector = new ScreenCoordinateCorrector();
-        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
         spriteWidthInUnit = corrector.convertToUnit(spriteRenderer.sprite.rect.size.x); 
         spriteHeightInUnit = corrector.convertToUnit(spriteRenderer.sprite.rect.size.y);
         interactor = transform.GetChild(0).gameObject;
@@ -75,8 +78,15 @@ public class PlayerControllerScript : MonoBehaviour
         {
             float axisHorizontal = Input.GetAxis("Horizontal");
             float axisVertical = Input.GetAxis("Vertical");
+
             Move(axisHorizontal, axisVertical);
             UpdateAnimationParameter();
+
+            if (axisHorizontal > 0)
+                spriteRenderer.flipX = true;
+            else if(axisHorizontal<0)
+                spriteRenderer.flipX = false;
+
             //rotation
             /*
             if(axisHorizontal * axisVertical == 0 || axisHorizontal * previousSpeedX <= 0 || axisHorizontal * previousSpeedX <= 0)
@@ -154,7 +164,7 @@ public class PlayerControllerScript : MonoBehaviour
     void RotateHorizontal(int direction)
     {
         int index = (int)(2 + 0.5 * direction + 0.5f);
-        playerAnimationController.runtimeAnimatorController = playerAnimationontrollerList[index];
+        playerAnimationController.runtimeAnimatorController = playerAnimationontrollerList[2];
         interactor.transform.localPosition = new Vector3((spriteWidthInUnit / 2   + interactor.transform.localScale.x )*direction, 0, 0);
     }
 

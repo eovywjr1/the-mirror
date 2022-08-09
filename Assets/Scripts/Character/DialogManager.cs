@@ -24,11 +24,13 @@ public class DialogManager : MonoBehaviour
     SpriteRenderer renderer; //캐릭터 스프라이트
     bool isTalking = false;
     bool isConversationCourintRunning = false;
+    bool isTalkFaster = false;
     public bool bedSettutorialindex;
 
     CSVReader reader;
     const float bubbleContentHeight = 40; //말풍선 텍스트 부분 가로크기
     const float bubbleHeight = 60; //말풍선 세로 크기
+    float textSpeed;
 
     public void Awake()
     {
@@ -38,6 +40,12 @@ public class DialogManager : MonoBehaviour
     public void Start()
     {
         renderer = gameObject.GetComponent<SpriteRenderer>();
+    }
+
+    private void Update()
+    {
+        if (isTalkFaster && Input.GetKeyDown("e"))
+            textSpeed = 0.01f;
     }
 
     public void BuildSpeechBubbleObject()
@@ -110,13 +118,17 @@ public class DialogManager : MonoBehaviour
             }
 
             textMesh.text = "";
+            textSpeed = 0.1f;
+            yield return new WaitForSeconds(0.05f);
             for (int i = 0; i < script.Length; i++) //대사 타자처럼 출력
             {
                 textMesh.text += script[i];
-                yield return new WaitForSecondsRealtime(0.1f);
+                isTalkFaster = true;
+                yield return new WaitForSecondsRealtime(textSpeed);
             }
 
             //대화 종류에 따라 여기서 분기
+
             if (selected_Prefab != null && index == 5)  //침대 선택 창 생성
                 Instantiate(selected_Prefab, new Vector3(transform.position.x + 2f, transform.position.y + 2.15f, 0), Quaternion.identity);
 
