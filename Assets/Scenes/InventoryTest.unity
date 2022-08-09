@@ -860,7 +860,6 @@ MonoBehaviour:
   - {fileID: 9100000, guid: 0956b0d395a71ff438d2eecf0e87bd0a, type: 2}
   - {fileID: 9100000, guid: a2510cd9e3edbee478e48f222a430415, type: 2}
   - {fileID: 9100000, guid: 2f0762c5302561244bedbb449e465bbf, type: 2}
-  - {fileID: 9100000, guid: 13086f48104d67a4fbbdbc2f2c8cc50a, type: 2}
   breakThreshold: 0.05
   animationBreakThreshold: 0.3
   playerState: 0
