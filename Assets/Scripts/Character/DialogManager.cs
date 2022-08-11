@@ -32,6 +32,8 @@ public class DialogManager : MonoBehaviour
     const float bubbleHeight = 60; //말풍선 세로 크기
     float textSpeed;
 
+    List<int> impossibleFaster = new List<int>() { 5 };
+
     public void Awake()
     {
         reader = new CSVReader();
@@ -119,11 +121,14 @@ public class DialogManager : MonoBehaviour
 
             textMesh.text = "";
             textSpeed = 0.1f;
+            isTalkFaster = false;
             yield return new WaitForSeconds(0.05f);
+            Debug.Log(reader.GetSelected(index));
             for (int i = 0; i < script.Length; i++) //대사 타자처럼 출력
             {
                 textMesh.text += script[i];
-                isTalkFaster = true;
+                if (reader.GetSelected(index).Equals("false")) // 선택지가 없는 대화만 빠르게
+                    isTalkFaster = true;
                 yield return new WaitForSecondsRealtime(textSpeed);
             }
 
