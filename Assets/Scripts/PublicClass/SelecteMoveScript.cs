@@ -7,6 +7,10 @@ public class SelecteMoveScript : MonoBehaviour
 {
     public int index;
     public List<Image> panelList;
+
+    public List<Sprite> currentImageList;
+    public List<Sprite> selectedImageList;
+    public List<Sprite> unSelectedImageList;
     public Image unselectedImage, selectedImage;
 
     public void Start()
@@ -55,5 +59,12 @@ public class SelecteMoveScript : MonoBehaviour
     {
         panelList[preIndex].color = new Color(0.23f, 0.23f, 0.7f); //unselectedimage
         panelList[index].color = new Color(1, 1, 1);    //selectedimage
+    }
+
+    //스프라이트 변환
+    public void ChangeSprite(int preIndex, int index)
+    {
+        currentImageList[preIndex] = unSelectedImageList[preIndex];
+        currentImageList[index] = selectedImageList[index];
     }
 }

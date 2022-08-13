@@ -1,9 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SelectButton : SelecteMoveScript
 {
+    public GameObject start;
+    public GameObject load;
+    public GameObject quit;
+
     // Update is called once per frame
     void Update()
     {
@@ -17,14 +22,14 @@ public class SelectButton : SelecteMoveScript
             if (index == -1)
             {
                 index = 2;
-                ChangePanel(index, index);
+                ChangeSprite(index, index);
             }
             else if (index > 0)
-                ChangePanel(index, --index);
+                ChangeSprite(index, --index);
             else
             {
                 index = 2;
-                ChangePanel(0, index);
+                ChangeSprite(0, index);
             }
         }
         if (Input.GetKeyDown("s"))
@@ -32,16 +37,19 @@ public class SelectButton : SelecteMoveScript
             if (index == -1)
             {
                 index = 0;
-                ChangePanel(index, index);
+                ChangeSprite(index, index);
             }
             else if (index < maxIndex)
-                ChangePanel(index, ++index);
+                ChangeSprite(index, ++index);
             else
             {
                 index = 0;
-                ChangePanel(2, index);
+                ChangeSprite(2, index);
             }
         }
+        start.GetComponent<Image>().sprite =currentImageList[0];
+        load.GetComponent<Image>().sprite = currentImageList[1];
+        quit.GetComponent<Image>().sprite = currentImageList[2];
     }
 
     public override void Select()
