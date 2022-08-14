@@ -109,12 +109,10 @@ public class PlayerControllerScript : MonoBehaviour
             float absAxisVertical = Mathf.Abs(axisVertical);
             if (absAxisHorizontal > absAxisVertical && axisHorizontal != 0)
             {
-                Debug.Log("Updated2");
                 RotateHorizontal(Convert.ToInt32(axisHorizontal / Mathf.Abs(axisHorizontal)));
             }
             if (absAxisVertical > absAxisHorizontal && axisVertical != 0)
             {
-                Debug.Log("Updated");
                 RotateVertical(Convert.ToInt32(axisVertical / Mathf.Abs(axisVertical)));
 
             }

@@ -6,7 +6,7 @@ using UnityEngine;
 public class CSVReader
 {
 
-    const string path = "Assets\\script.CSV";
+    
     bool isLoaded = false;//파일 로딩 확인
     int lines = 0;//줄 수 기록
     //ID는 그냥 csv 파일에만 기록, 불러오지는 않을 예정
@@ -14,7 +14,7 @@ public class CSVReader
     List<string> contents;//대사 목록
 
 
-    public CSVReader()
+    public CSVReader(string path)
     {
         StreamReader reader = new StreamReader(path);
 
