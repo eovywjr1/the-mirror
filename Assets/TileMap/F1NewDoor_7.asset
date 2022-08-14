@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: "\uC870\uAC01\uC0C11"
+  m_Name: F1NewDoor_7
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: 21300000, guid: cceee3042778bcf48bc1e945014c5bec, type: 3}
+  m_Sprite: {fileID: 1288572028, guid: 236553b958a79754884a1593e5ebb90d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1
