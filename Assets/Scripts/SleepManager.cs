@@ -56,7 +56,6 @@ public class SleepManager : SelecteMoveScript
         //튜토리얼 씬 조건 추가예정
         DialogManager characterDialogManager = FindObjectOfType<PlayerControllerScript>().gameObject.GetComponent<DialogManager>();
         characterDialogManager.bedSettutorialindex = true;
-        Destroy(this.gameObject);
     }
 
     IEnumerator Fadeout()

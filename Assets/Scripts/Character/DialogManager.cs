@@ -20,6 +20,7 @@ public class DialogManager : MonoBehaviour
     string path = "Assets\\script.CSV";
 
     GameObject speech_bubble_object;
+    GameObject selectedObject;
     static float axis_celibration = 0.015625f; // 1 / ppu
 
     SpriteRenderer renderer; //캐릭터 스프라이트
@@ -32,6 +33,8 @@ public class DialogManager : MonoBehaviour
     const float bubbleContentHeight = 40; //말풍선 텍스트 부분 가로크기
     const float bubbleHeight = 60; //말풍선 세로 크기
     float textSpeed;
+
+    List<int> impossibleFaster = new List<int>() { 5 };
 
     public void Awake()
     {
@@ -120,20 +123,25 @@ public class DialogManager : MonoBehaviour
 
             textMesh.text = "";
             textSpeed = 0.1f;
+            isTalkFaster = false;
             yield return new WaitForSeconds(0.05f);
+            Debug.Log(reader.GetSelected(index));
             for (int i = 0; i < script.Length; i++) //대사 타자처럼 출력
             {
                 textMesh.text += script[i];
-                isTalkFaster = true;
+                if (reader.GetSelected(index).Equals("false")) // 선택지가 없는 대화만 빠르게
+                    isTalkFaster = true;
                 yield return new WaitForSecondsRealtime(textSpeed);
             }
 
             //대화 종류에 따라 여기서 분기
+            if (selected_Prefab != null)    //선택지 생성
+            {
+                if (index == 5)  //침대 선택 창 생성
+                    selectedObject = Instantiate(selected_Prefab, new Vector3(transform.position.x + 2f, transform.position.y + 2.15f, 0), Quaternion.identity);
+            }
 
-            if (selected_Prefab != null && index == 5)  //침대 선택 창 생성
-                Instantiate(selected_Prefab, new Vector3(transform.position.x + 2f, transform.position.y + 2.15f, 0), Quaternion.identity);
-
-            yield return new WaitForSeconds(0.05f); //대사 2개 한번에 넘어가는거 방지
+            yield return new WaitForSeconds(0.5f); //대사 2개 한번에 넘어가는거 방지
             while (!Input.GetKeyDown(KeyCode.E) && !Input.GetKeyDown(KeyCode.Return)) //버튼 눌릴때까지 기다림
             {
                 yield return new WaitForSeconds(Time.deltaTime);
@@ -180,6 +188,7 @@ public class DialogManager : MonoBehaviour
         {
             index = 3;
             bedSettutorialindex = false;
+            Destroy(selectedObject);
         }
     }
 
