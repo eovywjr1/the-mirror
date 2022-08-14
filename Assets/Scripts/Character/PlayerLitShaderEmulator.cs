@@ -25,7 +25,6 @@ public class PlayerLitShaderEmulator : MonoBehaviour
         
         float intensity = noiseGenerator.getOutput();
         spriteRenderer.color = new Color(CalculateBrightnessColor(r, intensity), CalculateBrightnessColor(g, intensity), CalculateBrightnessColor(b, intensity));
-        Debug.Log(spriteRenderer.color.ToString());
     }
     float CalculateBrightnessColor(float f, float intensity) //명암 계산하는 함수
     {

@@ -7,25 +7,24 @@ public class CSVReader
 {
 
     const string path = "Assets\\script.CSV";
+    bool isLoaded = false;//íŒŒì¼ ë¡œë”© í™•ì¸
 
-    bool isLoaded = false;//ÆÄÀÏ ·Îµù È®ÀÎ
-
-    int lines = 0;//ÁÙ ¼ö ±â·Ï
-    //ID´Â ±×³É csv ÆÄÀÏ¿¡¸¸ ±â·Ï, ºÒ·¯¿ÀÁö´Â ¾ÊÀ» ¿¹Á¤
-    List<string> names;//Ä³¸¯ÅÍ ÀÌ¸§ ¸ñ·Ï
-    List<string> contents;//´ë»ç ¸ñ·Ï
-    List<string> isSelected; //¼±ÅÃÁö À¯¹«
+    int lines = 0;//ì¤„ ìˆ˜ ê¸°ë¡
+    //IDëŠ” ê·¸ëƒ¥ csv íŒŒì¼ì—ë§Œ ê¸°ë¡, ë¶ˆëŸ¬ì˜¤ì§€ëŠ” ì•Šì„ ì˜ˆì •
+    List<string> names;//ìºë¦­í„° ì´ë¦„ ëª©ë¡
+    List<string> contents;//ëŒ€ì‚¬ ëª©ë¡
+    List<string> isSelected; //ì„ íƒì§€ ìœ ë¬´
     
     public CSVReader()
     {
         StreamReader reader = new StreamReader(path);
 
-        //ÀÎ½ºÅÏ½º »ı¼º
+        //ì¸ìŠ¤í„´ìŠ¤ ìƒì„±
         names = new List<string>();
         contents = new List<string>();
         isSelected = new List<string>();
 
-        string line = reader.ReadLine(); //¸Ç À­ÁÙ ÆĞ½º
+        string line = reader.ReadLine(); //ë§¨ ìœ—ì¤„ íŒ¨ìŠ¤
         line = reader.ReadLine();
         while (line != null)
         {
@@ -33,7 +32,7 @@ public class CSVReader
             names.Add(items[1]);
             contents.Add(items[2]);
             isSelected.Add(items[3]);
-            line = reader.ReadLine();//ÀÌ°Å ¾ø¾î¼­ ¹«ÇÑ¹İº¹ ¹ß»ı;;
+            line = reader.ReadLine();//ì´ê±° ì—†ì–´ì„œ ë¬´í•œë°˜ë³µ ë°œìƒ;;
             lines++;
         }
         isLoaded = true;

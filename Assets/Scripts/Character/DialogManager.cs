@@ -17,6 +17,7 @@ public class DialogManager : MonoBehaviour
     [SerializeField]
     GameObject speech_bubble_prefab; //¸»Ç³¼± prefab
     [SerializeField] GameObject selected_Prefab;
+    string path = "Assets\\script.CSV";
 
     GameObject speech_bubble_object;
     GameObject selectedObject;
@@ -37,7 +38,7 @@ public class DialogManager : MonoBehaviour
 
     public void Awake()
     {
-        reader = new CSVReader();
+        reader = new CSVReader(path);
 
     }
     public void Start()
