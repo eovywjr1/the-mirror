@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface InteractionEvent
+public abstract class InteractionEvent : MonoBehaviour
 {
-    void Interact();
-    void Approach();
-    void StopInteract();
+
+    public abstract void Interact(GameObject player);
+    public abstract void Approach(GameObject player);
+    public abstract void StopInteract(GameObject player);
     
 }

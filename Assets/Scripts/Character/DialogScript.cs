@@ -11,7 +11,8 @@ public class DialogScript : MonoBehaviour
     //인스펙터 수정 가능 변수들
     [SerializeField]
     int id; //시작할 대사 ID
-    
+    string path = "Assets\\script.CSV";
+
     [SerializeField]
     string name;//캐릭터 이름
 
@@ -27,7 +28,7 @@ public class DialogScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        reader = new CSVReader();
+        reader = new CSVReader(path);
         renderer = gameObject.GetComponent<SpriteRenderer>();
         StartConversation();
     }
