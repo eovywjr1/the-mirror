@@ -28,7 +28,7 @@ public class DialogScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        reader = new CSVReader(path);
+        reader = new CSVReader();
         renderer = gameObject.GetComponent<SpriteRenderer>();
         StartConversation();
     }

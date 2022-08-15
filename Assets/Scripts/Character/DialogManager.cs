@@ -38,7 +38,7 @@ public class DialogManager : MonoBehaviour
 
     public void Awake()
     {
-        reader = new CSVReader(path);
+        reader = new CSVReader();
 
     }
     public void Start()
