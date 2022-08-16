@@ -10,13 +10,14 @@ public class TeleportEventReceiver : InteractionEvent
     string locationCSVFile = "Assets\\location.csv";
     public override void Approach(GameObject player)
     {
-        throw new System.NotImplementedException();
     }
 
     public override void Interact(GameObject player)
     {
-        
 
+        GameObject mainCameraObject = GameObject.FindGameObjectWithTag("MainCamera");
+        CameraScreenEffectManager cameraScreenEffectManager = mainCameraObject.GetComponent<CameraScreenEffectManager>();
+        cameraScreenEffectManager.ActivateEffect(0);
         StreamReader reader = new StreamReader(locationCSVFile);
         for (int i = 0; i < 1; i++)
             reader.ReadLine();
@@ -28,7 +29,6 @@ public class TeleportEventReceiver : InteractionEvent
 
     public override void StopInteract(GameObject player)
     {
-        throw new System.NotImplementedException();
     }
 
 }

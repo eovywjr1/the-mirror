@@ -49,12 +49,17 @@ public class DialogManager : MonoBehaviour
             textSpeed = 0.01f;
     }
 
+    public void CallDialogByEvent(int id)
+    {
+        Debug.Log("이벤트 호출됨 : " + id);
+    }
     public void BuildSpeechBubbleObject()
     {
         Vector3 pos = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + (renderer.sprite.rect.size.y * gameObject.transform.localScale.y / 2 + 50) * axis_celibration, 0); //말풍선 높이 설정
         Vector3 rot = new Vector3(0, 0, 0);
         speech_bubble_object = Instantiate(speech_bubble_prefab, pos, Quaternion.Euler(rot), null);
     }
+    
 
     public void StartConversation()
     {
