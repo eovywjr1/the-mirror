@@ -10,6 +10,13 @@ public class SleepManager : SelecteMoveScript
 
     public List<Sprite> dayImageList;
 
+    DialogManager dialogManager;
+
+    private void Awake()
+    {
+        dialogManager = FindObjectOfType<PlayerControllerScript>().gameObject.GetComponent<DialogManager>();
+    }
+
     void Update()
     {
         Move(1);
@@ -39,7 +46,7 @@ public class SleepManager : SelecteMoveScript
     {
         today = Instantiate(dayImage_prefab);
 
-        FindObjectOfType<PlayerControllerScript>().gameObject.GetComponent<DialogManager>().DestroyBubble();
+        dialogManager.DestroyBubble();
         for (int i = 0; i < transform.childCount; i++)
             transform.GetChild(i).gameObject.SetActive(false);
 
@@ -48,14 +55,13 @@ public class SleepManager : SelecteMoveScript
 
     void NoSleep()
     {
-        Destroy(this.gameObject);
+        dialogManager.isDeleteSelect = true;
     }
 
     void AgainButTutorial()
     {
         //튜토리얼 씬 조건 추가예정
-        DialogManager characterDialogManager = FindObjectOfType<PlayerControllerScript>().gameObject.GetComponent<DialogManager>();
-        characterDialogManager.bedSettutorialindex = true;
+        dialogManager.bedSettutorialindex = true;
     }
 
     IEnumerator Fadeout()

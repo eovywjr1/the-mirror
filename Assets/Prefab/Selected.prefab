@@ -119,6 +119,9 @@ MonoBehaviour:
   panelList:
   - {fileID: 0}
   - {fileID: 0}
+  currentImageList: []
+  selectedImageList: []
+  unSelectedImageList: []
   unselectedImage: {fileID: 0}
   selectedImage: {fileID: 0}
   dayImage_prefab: {fileID: 8865188753636961468, guid: 9a9bb34db1f60034c93978c0c0a62126, type: 3}

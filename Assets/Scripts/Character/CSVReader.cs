@@ -11,32 +11,28 @@ public class CSVReader
 
     int lines = 0;//줄 수 기록
     //ID는 그냥 csv 파일에만 기록, 불러오지는 않을 예정
-    List<string> names;//캐릭터 이름 목록
-    List<string> contents;//대사 목록
-    List<string> isSelected; //선택지 유무
-    
+    List<string> []dialogList;
+
     public CSVReader()
     {
         StreamReader reader = new StreamReader(path);
 
         //인스턴스 생성
-        names = new List<string>();
-        contents = new List<string>();
-        isSelected = new List<string>();
+        dialogList = new List<string>[7];
+        for (int i = 0; i < 7; i++)
+            dialogList[i] = new List<string>();
 
         string line = reader.ReadLine(); //맨 윗줄 패스
         line = reader.ReadLine();
         while (line != null)
         {
-            string[] items = line.Split(",");
-            names.Add(items[1]);
-            contents.Add(items[2]);
-            isSelected.Add(items[3]);
-            line = reader.ReadLine();//이거 없어서 무한반복 발생;;
+            string[] items = line.Split("@");
+            for (int i = 0; i < 7; i++)
+                dialogList[i].Add(items[i]);
+            line = reader.ReadLine();   //이거 없어서 무한반복 발생;;
             lines++;
         }
         isLoaded = true;
-
     }
 
     public int GetLine()
@@ -52,25 +48,33 @@ public class CSVReader
         else
             return false;
     }
-    public string GetName(int index)
+
+    public string GetDialogNo(int index)
     {
         if (CheckInvalidIndex(index))
             return "";
-        return names[index];
+        return dialogList[0][index];
+    }
+
+    public string GetCharacterid(int index)
+    {
+        if (CheckInvalidIndex(index))
+            return "";
+        return dialogList[2][index];
     }
 
     public string GetContent(int index)
     {
         if (CheckInvalidIndex(index))
             return "";
-        return contents[index];
+        return dialogList[3][index];
     }
 
     public string GetSelected(int index)
     {
         if (CheckInvalidIndex(index))
             return "";
-        return isSelected[index];
+        return dialogList[4][index];
     }
 
     public bool IsLoaded()
@@ -78,5 +82,10 @@ public class CSVReader
         return isLoaded;
     }
 
-
+    public string GetChangeId(int index)
+    {
+        if (CheckInvalidIndex(index))
+            return "";
+        return dialogList[6][index];
+    }
 }
