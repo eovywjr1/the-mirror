@@ -9,6 +9,7 @@ public class DialogManager : MonoBehaviour
     //인스펙터 수정 가능 변수들
     [SerializeField] int id;    //시작할 대사 index
     [SerializeField] int index;
+    int preIndex = 0; // 되돌아갈 대사 index
 
     [SerializeField]
     string Characterid; //캐릭터 id
@@ -107,8 +108,7 @@ public class DialogManager : MonoBehaviour
         string dialogNo = reader.GetDialogNo(index);
         string characterid = reader.GetCharacterid(index);
 
-
-        while (script != "" && reader.GetDialogNo(index) == dialogNo)   //대화 id 달라질 때까지
+        while (script != "" && (reader.GetDialogNo(index) == dialogNo || reader.GetDialogNo(index) == "100" || preIndex + 1 == index))  //대화 id 달라질 때까지
         {
             dialogNo = reader.GetDialogNo(index);
 
@@ -117,15 +117,11 @@ public class DialogManager : MonoBehaviour
             characterid = reader.GetCharacterid(index);
 
             rectTransform.sizeDelta = new Vector2(CalculateSizeInPixel(script), bubbleHeight) * axis_celibration; //말풍선 계산 수행
-            for (int i = 0; i < speech_bubble_object.transform.childCount; i++)
+            for (int i = 1; i < speech_bubble_object.transform.childCount; i++)
             {
                 Transform child = speech_bubble_object.transform.GetChild(i); //자식 오브젝트 한개
                                                                               //말풍선 세모모양 부분은 별도처리
 
-                if (i == 0)
-                {
-                    continue;
-                }
                 TextMeshProUGUI textbox = speech_bubble_object.transform.GetChild(i).GetComponent<TextMeshProUGUI>();
                 if (textbox) //텍스트 상자가 들어있는 오브젝트일때
                 {
@@ -154,10 +150,21 @@ public class DialogManager : MonoBehaviour
             if (selected_Prefab != null && !reader.GetSelected(index).Equals(""))   //선택지 생성
             {
                 string[] selectDialog = reader.GetSelected(index).Split("&");
-                selectedObject = Instantiate(selected_Prefab, new Vector3(transform.position.x + 2f, transform.position.y + 2.15f, 0), Quaternion.identity);
+                int maxlength = 0;
+                for (int i = 0; i < selectDialog.Length; i++)
+                    maxlength = Math.Max(maxlength, CalculateSizeInPixel(selectDialog[i]));
+
+                //말풍선 이미지 크기 추가예정
+                selectedObject = Instantiate(selected_Prefab, new Vector3(rectTransform.position.x + rectTransform.sizeDelta.x / 2 + 1f, speech_bubble_object.transform.position.y + 0.1f, 0), Quaternion.identity);
+
+                if (!reader.GetImpossibleIndex(index).Equals("")) // 선택지 불가 기능
+                    selectedObject.GetComponent<SleepManager>().impossibleindex = Convert.ToInt32(reader.GetImpossibleIndex(index));
 
                 for (int i = 0; i < selectDialog.Length; i++)
-                    selectedObject.transform.GetChild(i).GetComponent<TextMeshProUGUI>().text = " " + (i + 1) + ") " + selectDialog[i];
+                {
+                    selectedObject.transform.GetChild(i).GetComponent<RectTransform>().sizeDelta = new Vector2((maxlength - 40) * axis_celibration, 0.3f);
+                    selectedObject.transform.GetChild(i).GetComponent<TextMeshProUGUI>().text = selectDialog[i];
+                }
             }
 
             yield return new WaitForSeconds(0.5f); //대사 2개 한번에 넘어가는거 방지
@@ -166,18 +173,23 @@ public class DialogManager : MonoBehaviour
                 yield return new WaitForSeconds(Time.deltaTime);
             }
 
+            TutorialBed();
+
             if (isDeleteSelect) // 선택지 삭제
             {
                 Destroy(selectedObject);
                 isDeleteSelect = false;
             }
 
-            TutorialBed();
-
             if (!reader.GetChangeId(index).Equals(""))  //인덱스 변경
                 index = Convert.ToInt32(reader.GetChangeId(index)) - 2;
 
+            if (reader.GetDialogNo(index) == "100") //대사 되돌아가기
+                index = preIndex;
+
             index++;
+
+
             script = reader.GetContent(index);
         }
 
@@ -202,7 +214,7 @@ public class DialogManager : MonoBehaviour
             if (value >= 0x80)
                 size += 17;
             else
-                size += 10;
+                size += 8;
 
         }
         return size;
@@ -212,9 +224,9 @@ public class DialogManager : MonoBehaviour
     {
         if (bedSettutorialindex)
         {
+            preIndex = index - 1;
             index = -1;
             bedSettutorialindex = false;
-            Destroy(selectedObject);
         }
     }
 
@@ -240,11 +252,11 @@ public class DialogManager : MonoBehaviour
             case 1:
                 return "Player";
             case 2:
-                return "formal";
+                return "Formal";
             case 3:
-                return "headmaster";
+                return "Headmaster";
             case 4:
-                return "normal";
+                return "Normal";
             default:
                 return "";
         }

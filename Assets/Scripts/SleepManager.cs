@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class SleepManager : SelecteMoveScript
 {
@@ -10,36 +11,23 @@ public class SleepManager : SelecteMoveScript
 
     public List<Sprite> dayImageList;
 
+    public int impossibleindex;
+
     DialogManager dialogManager;
 
     private void Awake()
     {
         dialogManager = FindObjectOfType<PlayerControllerScript>().gameObject.GetComponent<DialogManager>();
+
+        selectActionList = new List<Action>();
+        selectActionList.Add(YesSleep);
+        selectActionList.Add(NoSleep);
     }
 
     void Update()
     {
         Move(1);
         Select();
-    }
-
-    public override void Select()
-    {
-        if (Input.GetKeyDown("e") || Input.GetKeyDown(KeyCode.Return))
-        {
-            if (index == -1)
-            {
-                AgainButTutorial();
-            }
-            else
-            {
-                if (index == 0)
-                    YesSleep();
-
-                else
-                    NoSleep();
-            }
-        }
     }
 
     void YesSleep()
@@ -56,12 +44,6 @@ public class SleepManager : SelecteMoveScript
     void NoSleep()
     {
         dialogManager.isDeleteSelect = true;
-    }
-
-    void AgainButTutorial()
-    {
-        //튜토리얼 씬 조건 추가예정
-        dialogManager.bedSettutorialindex = true;
     }
 
     IEnumerator Fadeout()

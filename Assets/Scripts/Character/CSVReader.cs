@@ -82,6 +82,13 @@ public class CSVReader
         return isLoaded;
     }
 
+    public string GetImpossibleIndex(int index)
+    {
+        if (CheckInvalidIndex(index))
+            return "";
+        return dialogList[5][index];
+    }
+
     public string GetChangeId(int index)
     {
         if (CheckInvalidIndex(index))
