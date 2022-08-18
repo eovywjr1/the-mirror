@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class SleepManager : SelecteMoveScript
 {
@@ -10,36 +11,30 @@ public class SleepManager : SelecteMoveScript
 
     public List<Sprite> dayImageList;
 
+    public int impossibleindex;
+
+    DialogManager dialogManager;
+
+    private void Awake()
+    {
+        dialogManager = FindObjectOfType<PlayerControllerScript>().gameObject.GetComponent<DialogManager>();
+
+        selectActionList = new List<Action>();
+        selectActionList.Add(YesSleep);
+        selectActionList.Add(NoSleep);
+    }
+
     void Update()
     {
         Move(1);
         Select();
     }
 
-    public override void Select()
-    {
-        if (Input.GetKeyDown("e") || Input.GetKeyDown(KeyCode.Return))
-        {
-            if (index == -1)
-            {
-                AgainButTutorial();
-            }
-            else
-            {
-                if (index == 0)
-                    YesSleep();
-
-                else
-                    NoSleep();
-            }
-        }
-    }
-
     void YesSleep()
     {
         today = Instantiate(dayImage_prefab);
 
-        FindObjectOfType<PlayerControllerScript>().gameObject.GetComponent<DialogManager>().DestroyBubble();
+        dialogManager.DestroyBubble();
         for (int i = 0; i < transform.childCount; i++)
             transform.GetChild(i).gameObject.SetActive(false);
 
@@ -48,14 +43,7 @@ public class SleepManager : SelecteMoveScript
 
     void NoSleep()
     {
-        Destroy(this.gameObject);
-    }
-
-    void AgainButTutorial()
-    {
-        //튜토리얼 씬 조건 추가예정
-        DialogManager characterDialogManager = FindObjectOfType<PlayerControllerScript>().gameObject.GetComponent<DialogManager>();
-        characterDialogManager.bedSettutorialindex = true;
+        dialogManager.isDeleteSelect = true;
     }
 
     IEnumerator Fadeout()

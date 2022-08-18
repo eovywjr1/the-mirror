@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class SelecteMoveScript : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class SelecteMoveScript : MonoBehaviour
     public List<Sprite> selectedImageList;
     public List<Sprite> unSelectedImageList;
     public Image unselectedImage, selectedImage;
+
+    public List<Action> selectActionList;
 
     public void Start()
     {
@@ -51,6 +54,11 @@ public class SelecteMoveScript : MonoBehaviour
     {
         if (Input.GetKeyDown("e") || Input.GetKeyDown(KeyCode.Return))  // e, enter 입력 가이드입니다.
         {
+            //튜토리얼 조건 추가 예정
+            if (index == -1)
+                AgainButTutorial();
+            else
+                selectActionList[index]();
         }
     }
 
@@ -66,5 +74,13 @@ public class SelecteMoveScript : MonoBehaviour
     {
         currentImageList[preIndex] = unSelectedImageList[preIndex];
         currentImageList[index] = selectedImageList[index];
+    }
+
+    void AgainButTutorial()
+    {
+        //튜토리얼 씬 조건 추가예정
+        DialogManager dialogManager = FindObjectOfType<PlayerControllerScript>().gameObject.GetComponent<DialogManager>();
+        dialogManager.bedSettutorialindex = true;
+        dialogManager.isDeleteSelect = true;
     }
 }

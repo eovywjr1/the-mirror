@@ -119,6 +119,9 @@ MonoBehaviour:
   panelList:
   - {fileID: 0}
   - {fileID: 0}
+  currentImageList: []
+  selectedImageList: []
+  unSelectedImageList: []
   unselectedImage: {fileID: 0}
   selectedImage: {fileID: 0}
   dayImage_prefab: {fileID: 8865188753636961468, guid: 9a9bb34db1f60034c93978c0c0a62126, type: 3}
@@ -191,7 +194,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: " 1) \uC608"
+  m_text: "\uC608"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e57a634f8aa3a2a43957a60070cf71fb, type: 2}
   m_sharedMaterial: {fileID: -2273451868207499536, guid: e57a634f8aa3a2a43957a60070cf71fb, type: 2}
@@ -225,7 +228,7 @@ MonoBehaviour:
   m_fontSizeMin: 20
   m_fontSizeMax: 25
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -326,7 +329,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: " 2) \uC544\uB2C8\uC624"
+  m_text: "\uC544\uB2C8\uC624"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e57a634f8aa3a2a43957a60070cf71fb, type: 2}
   m_sharedMaterial: {fileID: -2273451868207499536, guid: e57a634f8aa3a2a43957a60070cf71fb, type: 2}
@@ -360,7 +363,7 @@ MonoBehaviour:
   m_fontSizeMin: 20
   m_fontSizeMax: 25
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
