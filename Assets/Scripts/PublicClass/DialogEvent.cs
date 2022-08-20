@@ -7,6 +7,7 @@ public class DialogEvent : MonoBehaviour
     public delegate void EventCallDelegate(int id);
     public int index;
     public EventCallDelegate eventCallDelegate;
+    public int dialogID;
     // Start is called before the first frame update
     public void InitEvent(int idx, EventCallDelegate d)
     {

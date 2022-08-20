@@ -5,7 +5,9 @@ using static DialogEvent;
 
 public class DialogEventHandler : MonoBehaviour
 {
-    //반드시 dialogmanager와 함께 붙어야 함
+    //dialog manager가 부모 오브젝트에 있을 때 오브젝트 연결
+    [SerializeField]
+    GameObject dialogManagerObject;
     EventCallDelegate eventCallDelegate;
     [SerializeField]
 
@@ -14,7 +16,10 @@ public class DialogEventHandler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        dialogManager = GetComponent<DialogManager>(); //value does not fall in ???
+        if (dialogManagerObject)
+            dialogManager = dialogManagerObject.GetComponent<DialogManager>();
+        else
+            dialogManager = GetComponent<DialogManager>(); //value does not fall in ???
         eventCallDelegate = dialogManager.CallDialogByEvent;
         for(int i=0; i<dialogEvents.Length; i++)
         {

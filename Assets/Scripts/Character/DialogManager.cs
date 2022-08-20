@@ -6,18 +6,21 @@ using UnityEngine;
 
 public class DialogManager : MonoBehaviour
 {
-    //인스펙터 수정 가능 변수들
     [SerializeField]
     int id; //시작할 대사 ID
-    [SerializeField] int index;
-
+    [SerializeField] 
+    int index;
     [SerializeField]
     string name;//캐릭터 이름
-
     [SerializeField]
     GameObject speech_bubble_prefab; //말풍선 prefab
-    [SerializeField] GameObject selected_Prefab;
-    string path = "Assets\\script.CSV";
+    [SerializeField] 
+    GameObject selected_Prefab;
+    string path = "Assets\\script.CSV"; //스크립트 위치
+
+    [SerializeField]
+    AutoAction[] autoActions; // Move 및 Scene에 해당하는 부분들
+
 
     GameObject speech_bubble_object;
     static float axis_celibration = 0.015625f; // 1 / ppu
@@ -49,9 +52,14 @@ public class DialogManager : MonoBehaviour
             textSpeed = 0.01f;
     }
 
-    public void CallDialogByEvent(int id)
+    public void CallDialogByEvent(int dialogID)
     {
-        Debug.Log("이벤트 호출됨 : " + id);
+        Debug.Log("대화상자 출력 : " + dialogID);
+    }
+    public void CallAutoAction(int actionID)
+    {
+        AutoAction action = autoActions[actionID];
+        action.Action();
     }
     public void BuildSpeechBubbleObject()
     {
@@ -63,6 +71,7 @@ public class DialogManager : MonoBehaviour
 
     public void StartConversation()
     {
+        CallAutoAction(0);//테스트 목적임 꼭 지워야함
         if (isTalking)
             return;
         isTalking = true;
