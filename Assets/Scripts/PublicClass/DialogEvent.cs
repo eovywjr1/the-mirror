@@ -5,13 +5,12 @@ using UnityEngine;
 public class DialogEvent : MonoBehaviour
 {
     public delegate void EventCallDelegate(int id);
-    public int index;
     public EventCallDelegate eventCallDelegate;
+    [SerializeField]
     public int dialogID;
     // Start is called before the first frame update
-    public void InitEvent(int idx, EventCallDelegate d)
+    public void InitEvent(EventCallDelegate d)
     {
-        index = idx;
         eventCallDelegate = d;
     }
     private void Start()

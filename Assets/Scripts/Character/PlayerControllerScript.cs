@@ -7,34 +7,38 @@ public class PlayerControllerScript : MonoBehaviour
 {
     
     [SerializeField]
-    float playerMaxSpeed;               // ÇÃ·¹ÀÌ¾î°¡ ÃÖ´ë·Î ³»´Â ¼Óµµ
+    float playerMaxSpeed;               // í”Œë ˆì´ì–´ê°€ ìµœëŒ€ë¡œ ë‚´ëŠ” ì†ë„
     [SerializeField]
-    float shiftMultiplyRate;            //½¬ÇÁÆ® ´©¸£¸é ¸î¹è·Î »¡¶óÁö´Â°¡?
+    float shiftMultiplyRate;            //ì‰¬í”„íŠ¸ ëˆ„ë¥´ë©´ ëª‡ë°°ë¡œ ë¹¨ë¼ì§€ëŠ”ê°€?
     [SerializeField]
-    float playerAcceleration;           // ¹ÎÃ¸µµ? ÇÃ·¹ÀÌ¾î ÀÌµ¿ °¡¼Óµµ
-    protected Vector3 speed;                      // ÇÃ·¹ÀÌ¾î ÇöÀç¼Óµµ
-    float directionX = 0;                  // °¡·Î ¿òÁ÷ÀÌ´Â ¹æÇâ
-    float directionY = 0;               //¼¼·Î ¿òÁ÷ÀÌ´Â ¹æÇâ
+    float playerAcceleration;           // ë¯¼ì²©ë„? í”Œë ˆì´ì–´ ì´ë™ ê°€ì†ë„
+    protected Vector3 speed;                      // í”Œë ˆì´ì–´ í˜„ì¬ì†ë„
+    float directionX = 0;                  // ê°€ë¡œ ì›€ì§ì´ëŠ” ë°©í–¥
+    float directionY = 0;               //ì„¸ë¡œ ì›€ì§ì´ëŠ” ë°©í–¥
     [SerializeField]
-    RuntimeAnimatorController[] playerAnimationontrollerList; //»óÈ­ÁÂ¿ì ¾Ö´Ï¸ŞÀÌ¼Ç
+    RuntimeAnimatorController[] playerAnimationontrollerList; //ìƒí™”ì¢Œìš° ì• ë‹ˆë©”ì´ì…˜
     [SerializeField]
-    float breakThreshold;               // ÀÌ ¼Óµµ ÀÌÇÏ¸é ¾Æ¿¹ ¸ØÃã
+    float breakThreshold;               // ì´ ì†ë„ ì´í•˜ë©´ ì•„ì˜ˆ ë©ˆì¶¤
     [SerializeField]
-    float animationBreakThreshold;      //¿¡´Ï¸ÅÀÌ¼Ç¿¡ ÇØ´ç
+    float animationBreakThreshold;      //ì—ë‹ˆë§¤ì´ì…˜ì— í•´ë‹¹
 
-    protected Animator playerAnimationController; //°ÉÀ½°ÉÀÌ ¾Ö´Ï¸ŞÀÌ¼Ç ÄÁÆ®·Ñ·¯
-    protected ScreenCoordinateCorrector corrector; //ÁÂÇ¥ º¸Á¤¿ë
-    protected GameObject interactor; //»óÈ£ÀÛ¿ë ¹üÀ§ Äİ¶óÀÌ´õ
-    InteractManageer interactManageer;//»óÈ£ÀÛ¿ë ½ºÅ©¸³Æ®
+    protected Animator playerAnimationController; //ê±¸ìŒê±¸ì´ ì• ë‹ˆë©”ì´ì…˜ ì»¨íŠ¸ë¡¤ëŸ¬
+    protected ScreenCoordinateCorrector corrector; //ì¢Œí‘œ ë³´ì •ìš©
+    protected GameObject interactor; //ìƒí˜¸ì‘ìš© ë²”ìœ„ ì½œë¼ì´ë”
+    
+    float axisHorizontal;//ê°€ë¡œì…ë ¥
+    float axisVertical;//ì„¸ë¡œì…ë ¥
+    
+    InteractManageer interactManageer;//ìƒí˜¸ì‘ìš© ìŠ¤í¬ë¦½íŠ¸
     protected SpriteRenderer spriteRenderer;
 
-    protected float previousSpeedX = 0.0f;//ÀÌÀü °¡·Î ¼Óµµ
-    protected float previousSpeedY = 0.0f;//ÀÌÀü °¡·Î ¼Óµµ
-    protected bool isShiftPressed = false; //¸¸¾à ´Ş¸®´Â µµÁß Æ¯Á¤ Çàµ¿À» ÇÒ ¼ö ¾øÀ» ¶§¿¡ ´ëºñ
+    protected float previousSpeedX = 0.0f;//ì´ì „ ê°€ë¡œ ì†ë„
+    protected float previousSpeedY = 0.0f;//ì´ì „ ê°€ë¡œ ì†ë„
+    protected bool isShiftPressed = false; //ë§Œì•½ ë‹¬ë¦¬ëŠ” ë„ì¤‘ íŠ¹ì • í–‰ë™ì„ í•  ìˆ˜ ì—†ì„ ë•Œì— ëŒ€ë¹„
     protected float spriteWidthInUnit;
     protected float spriteHeightInUnit;
 
-    [SerializeField] protected int playerState = 0; // ¾Ö´Ï¸ŞÀÌ¼Ç¿¡ ³Ö±â À§ÇÑ ÇÃ·¹ÀÌ¾î ¿òÁ÷ÀÓ »óÅÂ
+    [SerializeField] protected int playerState = 0; // ì• ë‹ˆë©”ì´ì…˜ì— ë„£ê¸° ìœ„í•œ í”Œë ˆì´ì–´ ì›€ì§ì„ ìƒíƒœ
 
     public bool isImpossibleMove;
 
@@ -54,13 +58,27 @@ public class PlayerControllerScript : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        ProcessInteractEvent();
-        isShiftPressed = Input.GetKey(KeyCode.LeftShift);
+        if(Input.GetKeyDown(KeyCode.E))
+            ProcessInteractEvent();
+        //isShiftPressed = Input.GetKey(KeyCode.LeftShift);
     }
-
-    void ProcessInteractEvent()
+    
+    //ì™¸ë¶€ì—ì„œ ìë™ ì»¨íŠ¸ë¡¤ì„ ìœ„í•´ ì™¸ë¶€ì—ì„œ axis ê°’ ì…ë ¥ë°›ëŠ” í•¨ìˆ˜ë“¤
+    public void SetHorizontalAxis(float axis)
     {
-        if (Input.GetKeyDown(KeyCode.E) && !isImpossibleMove && gameObject.tag == "Player")
+        axisHorizontal = axis;
+    }
+    public void SetVerticalAxis(float axis)
+    {
+        axisVertical = axis;
+    }
+    public void SetShiftPressed(bool b)
+    {
+        isShiftPressed = b;
+    }
+    public void ProcessInteractEvent()
+    {
+        if ( !isImpossibleMove && gameObject.tag == "Player")
         {
             interactManageer.Interact(0);
             playerAnimationController.SetInteger("state", 0);
@@ -72,9 +90,6 @@ public class PlayerControllerScript : MonoBehaviour
     {
         if (!isImpossibleMove)
         {
-            float axisHorizontal = Input.GetAxis("Horizontal");
-            float axisVertical = Input.GetAxis("Vertical");
-
             ActiveMove(axisHorizontal, axisVertical, true);
 
             //rotation
@@ -91,7 +106,7 @@ public class PlayerControllerScript : MonoBehaviour
                 {
                     RotateVertical(Convert.ToInt32(axisVertical / Mathf.Abs(axisVertical)));
                 }
-                //¸ğµÎ°¡ 0ÀÏ¶§´Â ±×³É ÇÃ·¹ÀÌ¾î È¸Àü ±×´ë·Î
+                //ëª¨ë‘ê°€ 0ì¼ë•ŒëŠ” ê·¸ëƒ¥ í”Œë ˆì´ì–´ íšŒì „ ê·¸ëŒ€ë¡œ
             }
             */
         }
@@ -130,20 +145,20 @@ public class PlayerControllerScript : MonoBehaviour
         previousSpeedY = axisVertical;
     }
 
-    //ÀÔ·Â ¹Ş¾Æ¼­ ÇÃ·¹ÀÌ¾î ¿òÁ÷ÀÌ´Â ÇÔ¼ö (¼Óµµ ÁÂÇ¥¿¡ ´õÇÏ´Â ¹æ½ÄÀ¸·Î ÇÒ°Í)
+    //ì…ë ¥ ë°›ì•„ì„œ í”Œë ˆì´ì–´ ì›€ì§ì´ëŠ” í•¨ìˆ˜ (ì†ë„ ì¢Œí‘œì— ë”í•˜ëŠ” ë°©ì‹ìœ¼ë¡œ í• ê²ƒ)
     protected void Move(float x, float y)
     {
 
         directionX = x;
         directionY = y;
 
-        //»õ·Î¿î ¼Óµµ °è»ê
+        //ìƒˆë¡œìš´ ì†ë„ ê³„ì‚°
         Vector3 newSpeed = new Vector3(directionX,directionY,0);
 
-        //¼Óµµ °è»êÇÑ°Í °¡Áö°í state °áÁ¤, ¾ÆÁ÷ ¼Óµµ°¡ º¯È­ ¾ÈÇÔ
+        //ì†ë„ ê³„ì‚°í•œê²ƒ ê°€ì§€ê³  state ê²°ì •, ì•„ì§ ì†ë„ê°€ ë³€í™” ì•ˆí•¨
         UpdateState(speed.x , newSpeed.x,speed.y, newSpeed.y); 
 
-        //Ä³¸¯ÅÍ ¼Óµµ ¹İ¿µ
+        //ìºë¦­í„° ì†ë„ ë°˜ì˜
         if (isShiftPressed)
             transform.position += newSpeed * playerMaxSpeed * Time.deltaTime * (Convert.ToInt16(isShiftPressed) * shiftMultiplyRate);
         else
@@ -153,17 +168,17 @@ public class PlayerControllerScript : MonoBehaviour
             gameObject.transform.position += (speed * Time.deltaTime);
         */
 
-        //±âÁ¸ ¼Óµµ ¾÷µ¥ÀÌÆ®
+        //ê¸°ì¡´ ì†ë„ ì—…ë°ì´íŠ¸
         speed = newSpeed;
     }
 
-    protected void RotateVertical(int direction)//ÇÃ·¹ÀÌ¾î ¿òÁ÷ÀÌ´Â ¹æÇâ¿¡ µû¶ó È¸ÀüÇØÁÙ ÇÔ¼ö
+    protected void RotateVertical(int direction)//í”Œë ˆì´ì–´ ì›€ì§ì´ëŠ” ë°©í–¥ì— ë”°ë¼ íšŒì „í•´ì¤„ í•¨ìˆ˜
     {
-        //Ä³¸¯ÅÍ È¸Àü
+        //ìºë¦­í„° íšŒì „
         int index = (int)(0.5 * direction + 0.5f);
         Debug.Log(index);
         playerAnimationController.runtimeAnimatorController = playerAnimationontrollerList[index];
-        //Äİ¶óÀÌ´õ È¸Àü
+        //ì½œë¼ì´ë” íšŒì „
         if(interactor != null)
             interactor.transform.localPosition = new Vector3(0, (spriteHeightInUnit / 2  + interactor.transform.localScale.y)*direction , 0);
     }
@@ -176,10 +191,10 @@ public class PlayerControllerScript : MonoBehaviour
             interactor.transform.localPosition = new Vector3((spriteWidthInUnit / 2 + interactor.transform.localScale.x) * direction, 0, 0);
     }
 
-    //¼Óµµ °è»êÇØ¼­ ´Ş¸®´ÂÁö, ¸ØÃß´Â ÁßÀÎÁö, ¸ØÃß´ÂÁö »óÅÂ Ç¥½Ã
+    //ì†ë„ ê³„ì‚°í•´ì„œ ë‹¬ë¦¬ëŠ”ì§€, ë©ˆì¶”ëŠ” ì¤‘ì¸ì§€, ë©ˆì¶”ëŠ”ì§€ ìƒíƒœ í‘œì‹œ
     void UpdateState(float previousSpeedX, float newSpeedX, float previousSpeedY, float newSpeedY)
     {
-        float deltaSpeedX = Mathf.Abs(newSpeedX) - Mathf.Abs(previousSpeedX); //¼Óµµ Å©±â Â÷ÀÌ
+        float deltaSpeedX = Mathf.Abs(newSpeedX) - Mathf.Abs(previousSpeedX); //ì†ë„ í¬ê¸° ì°¨ì´
         float deltaSpeedY = Mathf.Abs(newSpeedY) - Mathf.Abs(previousSpeedX);
         //if (speed.x <= animationBreakThreshold && speed.x >= -animationBreakThreshold)
         if(newSpeedX == 0 && newSpeedY == 0)
@@ -200,14 +215,14 @@ public class PlayerControllerScript : MonoBehaviour
                 playerState = 3;
             else
                 playerState = 1;
-            //¹æÇâ¿¡ µû¶ó Ä³¸¯ÅÍ ÁÂ¿ì ¹İÀü
+            //ë°©í–¥ì— ë”°ë¼ ìºë¦­í„° ì¢Œìš° ë°˜ì „
             //if (Input.GetAxis("Horizontal") != 0)
             //    gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, speed.x < 0 ? 180f : 0, 0));
 
         }
     }
 
-    //Àü¿ªº¯¼ö¿¡ ÀÖ´Â state¸¦ ¾Ö´Ï¸ŞÀÌ¼Ç ÄÁÆ®·Ñ·¯ ÆÄ¶ó¹ÌÅÍ·Î Àü´ŞÇÏ´Â ÇÔ¼ö
+    //ì „ì—­ë³€ìˆ˜ì— ìˆëŠ” stateë¥¼ ì• ë‹ˆë©”ì´ì…˜ ì»¨íŠ¸ë¡¤ëŸ¬ íŒŒë¼ë¯¸í„°ë¡œ ì „ë‹¬í•˜ëŠ” í•¨ìˆ˜
     protected void UpdateAnimationParameter()
     {
         playerAnimationController.SetInteger("state", playerState);
