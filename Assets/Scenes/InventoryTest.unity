@@ -976,12 +976,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b19d53bef81ff11479e0bdce3305dd87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 5
+  id: 28
   index: 0
-  name: "\uCE90\uB9AD\uD130"
+  Characterid: 
   speech_bubble_prefab: {fileID: 8637874343786693755, guid: 5651e3f4208cf4f478a178d5599da600, type: 3}
   selected_Prefab: {fileID: 4514419884897556353, guid: 54de27e952442454d83971af2e68be60, type: 3}
   bedSettutorialindex: 0
+  isDeleteSelect: 0
 --- !u!1001 &7472316324068795122
 PrefabInstance:
   m_ObjectHideFlags: 0
