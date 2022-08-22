@@ -8,13 +8,28 @@ public class TeleportEventReceiver : InteractionEvent
     
 {
     string locationCSVFile = "Assets\\location.csv";
+    GameObject player;
+    PlayerControllerScript playerControllerScript;
     public override void Approach(GameObject player)
     {
     }
 
     public override void Interact(GameObject player)
     {
+        player = GameObject.Find("Player");
+        playerControllerScript = player.GetComponent<PlayerControllerScript>();
+        StartCoroutine(Teleport(player));
+        
+        
+    }
 
+    public override void StopInteract(GameObject player)
+    {
+    }
+    IEnumerator Teleport(GameObject player)
+    {
+        if (playerControllerScript.isImpossibleMove)
+            playerControllerScript.isImpossibleMove = true;
         GameObject mainCameraObject = GameObject.FindGameObjectWithTag("MainCamera");
         CameraScreenEffectManager cameraScreenEffectManager = mainCameraObject.GetComponent<CameraScreenEffectManager>();
         cameraScreenEffectManager.ActivateEffect(0);
@@ -24,11 +39,8 @@ public class TeleportEventReceiver : InteractionEvent
         string line = reader.ReadLine(); //id는 1번부터 시작
         int x = Convert.ToInt32(line.Split(',')[0]);
         int y = Convert.ToInt32(line.Split(',')[1]);
-        GameObject.Find("Player").transform.position = new Vector2(x, y);
+        yield return new WaitForSeconds(0.5f); //이거 효과 시간이랑 연동해야함.
+        player.transform.position = new Vector2(x, y);
+        player.GetComponent<PlayerControllerScript>().isImpossibleMove = false;
     }
-
-    public override void StopInteract(GameObject player)
-    {
-    }
-
 }
