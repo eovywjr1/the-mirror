@@ -12,7 +12,7 @@ public class PlayerControllerScript : MonoBehaviour
     float shiftMultiplyRate;            //쉬프트 누르면 몇배로 빨라지는가?
     [SerializeField]
     float playerAcceleration;           // 민첩도? 플레이어 이동 가속도
-    Vector3 speed;                      // 플레이어 현재속도
+    protected Vector3 speed;                      // 플레이어 현재속도
     float directionX = 0;                  // 가로 움직이는 방향
     float directionY = 0;               //세로 움직이는 방향
     [SerializeField]
@@ -22,19 +22,19 @@ public class PlayerControllerScript : MonoBehaviour
     [SerializeField]
     float animationBreakThreshold;      //에니매이션에 해당
 
-    Animator playerAnimationController; //걸음걸이 애니메이션 컨트롤러
-    ScreenCoordinateCorrector corrector; //좌표 보정용
-    GameObject interactor; //상호작용 범위 콜라이더
+    protected Animator playerAnimationController; //걸음걸이 애니메이션 컨트롤러
+    protected ScreenCoordinateCorrector corrector; //좌표 보정용
+    protected GameObject interactor; //상호작용 범위 콜라이더
     InteractManageer interactManageer;//상호작용 스크립트
-    SpriteRenderer spriteRenderer;
+    protected SpriteRenderer spriteRenderer;
 
-    float previousSpeedX = 0.0f;//이전 가로 속도
-    float previousSpeedY = 0.0f;//이전 가로 속도
-    bool isShiftPressed = false; //만약 달리는 도중 특정 행동을 할 수 없을 때에 대비
-    float spriteWidthInUnit;
-    float spriteHeightInUnit;
+    protected float previousSpeedX = 0.0f;//이전 가로 속도
+    protected float previousSpeedY = 0.0f;//이전 가로 속도
+    protected bool isShiftPressed = false; //만약 달리는 도중 특정 행동을 할 수 없을 때에 대비
+    protected float spriteWidthInUnit;
+    protected float spriteHeightInUnit;
 
-    [SerializeField] int playerState = 0;                // 애니메이션에 넣기 위한 플레이어 움직임 상태
+    [SerializeField] protected int playerState = 0; // 애니메이션에 넣기 위한 플레이어 움직임 상태
 
     public bool isImpossibleMove;
 
@@ -47,22 +47,18 @@ public class PlayerControllerScript : MonoBehaviour
         spriteHeightInUnit = corrector.convertToUnit(spriteRenderer.sprite.rect.size.y);
         interactor = transform.GetChild(0).gameObject;
         interactManageer = interactor.GetComponent<InteractManageer>();
-        
-    }
-    void Start()
-    {
-        speed = new Vector3(0, 0, 0);
         playerAnimationController = GetComponent<Animator>();
+        speed = new Vector3(0, 0, 0);
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         ProcessInteractEvent();
         isShiftPressed = Input.GetKey(KeyCode.LeftShift);
     }
 
-    private void ProcessInteractEvent()
+    void ProcessInteractEvent()
     {
         if (Input.GetKeyDown(KeyCode.E) && !isImpossibleMove && gameObject.tag == "Player")
         {
@@ -72,20 +68,14 @@ public class PlayerControllerScript : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
+    void FixedUpdate()
     {
         if (!isImpossibleMove)
         {
             float axisHorizontal = Input.GetAxis("Horizontal");
             float axisVertical = Input.GetAxis("Vertical");
 
-            Move(axisHorizontal, axisVertical);
-            UpdateAnimationParameter();
-
-            if (axisHorizontal > 0)
-                spriteRenderer.flipX = true;
-            else if(axisHorizontal<0)
-                spriteRenderer.flipX = false;
+            ActiveMove(axisHorizontal, axisVertical, true);
 
             //rotation
             /*
@@ -104,26 +94,44 @@ public class PlayerControllerScript : MonoBehaviour
                 //모두가 0일때는 그냥 플레이어 회전 그대로
             }
             */
+        }
+    }
 
-            float absAxisHorizontal = Mathf.Abs(axisHorizontal);
-            float absAxisVertical = Mathf.Abs(axisVertical);
-            if (absAxisHorizontal > absAxisVertical && axisHorizontal != 0)
-            {
+    protected void ActiveMove(float axisHorizontal, float axisVertical, bool flip)
+    {
+        Move(axisHorizontal, axisVertical);
+        UpdateAnimationParameter();
+
+        if (axisHorizontal > 0)
+            spriteRenderer.flipX = flip;
+        else if (axisHorizontal < 0)
+            spriteRenderer.flipX = !flip;
+
+        float absAxisHorizontal = Mathf.Abs(axisHorizontal);
+        float absAxisVertical = Mathf.Abs(axisVertical);
+
+        if (absAxisHorizontal > absAxisVertical && axisHorizontal != 0)
+        {
+            RotateHorizontal(Convert.ToInt32(axisHorizontal / Mathf.Abs(axisHorizontal)));
+        }
+        else if (absAxisVertical > absAxisHorizontal && axisVertical != 0)
+        {
+            RotateVertical(Convert.ToInt32(axisVertical / Mathf.Abs(axisVertical)));
+        }
+        else if(absAxisVertical == absAxisHorizontal && axisVertical != 0)
+        {
+            if(absAxisVertical > 0)
                 RotateHorizontal(Convert.ToInt32(axisHorizontal / Mathf.Abs(axisHorizontal)));
-            }
-            if (absAxisVertical > absAxisHorizontal && axisVertical != 0)
-            {
+            else
                 RotateVertical(Convert.ToInt32(axisVertical / Mathf.Abs(axisVertical)));
-
-            }
-
-            previousSpeedX = axisHorizontal;
-            previousSpeedY = axisVertical;
         }
 
+        previousSpeedX = axisHorizontal;
+        previousSpeedY = axisVertical;
     }
+
     //입력 받아서 플레이어 움직이는 함수 (속도 좌표에 더하는 방식으로 할것)
-    private void Move(float x, float y)
+    protected void Move(float x, float y)
     {
 
         directionX = x;
@@ -136,7 +144,6 @@ public class PlayerControllerScript : MonoBehaviour
         UpdateState(speed.x , newSpeed.x,speed.y, newSpeed.y); 
 
         //캐릭터 속도 반영
-        
         if (isShiftPressed)
             transform.position += newSpeed * playerMaxSpeed * Time.deltaTime * (Convert.ToInt16(isShiftPressed) * shiftMultiplyRate);
         else
@@ -148,22 +155,25 @@ public class PlayerControllerScript : MonoBehaviour
 
         //기존 속도 업데이트
         speed = newSpeed;
-        
     }
-    void RotateVertical(int direction)//플레이어 움직이는 방향에 따라 회전해줄 함수
+
+    protected void RotateVertical(int direction)//플레이어 움직이는 방향에 따라 회전해줄 함수
     {
         //캐릭터 회전
         int index = (int)(0.5 * direction + 0.5f);
+        Debug.Log(index);
         playerAnimationController.runtimeAnimatorController = playerAnimationontrollerList[index];
         //콜라이더 회전
-        interactor.transform.localPosition = new Vector3(0, (spriteHeightInUnit / 2  + interactor.transform.localScale.y)*direction , 0);
-       
+        if(interactor != null)
+            interactor.transform.localPosition = new Vector3(0, (spriteHeightInUnit / 2  + interactor.transform.localScale.y)*direction , 0);
     }
-    void RotateHorizontal(int direction)
+
+    protected void RotateHorizontal(int direction)
     {
         int index = (int)(2 + 0.5 * direction + 0.5f);
         playerAnimationController.runtimeAnimatorController = playerAnimationontrollerList[2];
-        interactor.transform.localPosition = new Vector3((spriteWidthInUnit / 2   + interactor.transform.localScale.x )*direction, 0, 0);
+        if (interactor != null)
+            interactor.transform.localPosition = new Vector3((spriteWidthInUnit / 2 + interactor.transform.localScale.x) * direction, 0, 0);
     }
 
     //속도 계산해서 달리는지, 멈추는 중인지, 멈추는지 상태 표시
@@ -195,10 +205,10 @@ public class PlayerControllerScript : MonoBehaviour
             //    gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, speed.x < 0 ? 180f : 0, 0));
 
         }
-
     }
+
     //전역변수에 있는 state를 애니메이션 컨트롤러 파라미터로 전달하는 함수
-    void UpdateAnimationParameter()
+    protected void UpdateAnimationParameter()
     {
         playerAnimationController.SetInteger("state", playerState);
     }
