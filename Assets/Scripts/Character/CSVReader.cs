@@ -27,6 +27,7 @@ public class CSVReader
         while (line != null)
         {
             string[] items = line.Split("@");
+
             for (int i = 0; i < 7; i++)
                 dialogList[i].Add(items[i]);
             line = reader.ReadLine();   //이거 없어서 무한반복 발생;;

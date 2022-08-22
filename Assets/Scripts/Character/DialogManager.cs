@@ -6,24 +6,28 @@ using UnityEngine;
 
 public class DialogManager : MonoBehaviour
 {
-    //ÀÎ½ºÆåÅÍ ¼öÁ¤ °¡´É º¯¼öµé
-    [SerializeField] int id;    //½ÃÀÛÇÒ ´ë»ç index
+    //ì¸ìŠ¤í™í„° ìˆ˜ì • ê°€ëŠ¥ ë³€ìˆ˜ë“¤
+    [SerializeField] int id;    //ì‹œì‘í•  ëŒ€ì‚¬ index
     [SerializeField] int index;
-    int preIndex = 0; // µÇµ¹¾Æ°¥ ´ë»ç index
+    int preIndex = 0; // ë˜ëŒì•„ê°ˆ ëŒ€ì‚¬ index
 
     [SerializeField]
-    string Characterid; //Ä³¸¯ÅÍ id
+    string Characterid; //ìºë¦­í„° id
+    [SerializeField]
+    GameObject speech_bubble_prefab; //ë§í’ì„  prefab
+    [SerializeField] 
+    GameObject selected_Prefab;
+    string path = "Assets\\script.CSV"; //ìŠ¤í¬ë¦½íŠ¸ ìœ„ì¹˜
 
     [SerializeField]
-    GameObject speech_bubble_prefab; //¸»Ç³¼± prefab
-    [SerializeField] GameObject selected_Prefab;
-    string path = "Assets\\script.CSV";
+    AutoAction[] autoActions; // Move ë° Sceneì— í•´ë‹¹í•˜ëŠ” ë¶€ë¶„ë“¤
+
 
     GameObject speech_bubble_object;
     GameObject selectedObject;
     static float axis_celibration = 0.015625f; // 1 / ppu
 
-    SpriteRenderer renderer; //Ä³¸¯ÅÍ ½ºÇÁ¶óÀÌÆ®
+    SpriteRenderer renderer; //ìºë¦­í„° ìŠ¤í”„ë¼ì´íŠ¸
     bool isTalking = false;
     bool isConversationCourintRunning = false;
     bool isTalkFaster = false;
@@ -31,8 +35,8 @@ public class DialogManager : MonoBehaviour
     public bool isDeleteSelect;
 
     CSVReader reader;
-    const float bubbleContentHeight = 40; //¸»Ç³¼± ÅØ½ºÆ® ºÎºĞ °¡·ÎÅ©±â
-    const float bubbleHeight = 60; //¸»Ç³¼± ¼¼·Î Å©±â
+    const float bubbleContentHeight = 40; //ë§í’ì„  í…ìŠ¤íŠ¸ ë¶€ë¶„ ê°€ë¡œí¬ê¸°
+    const float bubbleHeight = 60; //ë§í’ì„  ì„¸ë¡œ í¬ê¸°
     float textSpeed;
 
     List<int> impossibleFaster = new List<int>() { 5 };
@@ -53,29 +57,40 @@ public class DialogManager : MonoBehaviour
             textSpeed = 0.01f;
     }
 
+    public void CallDialogByEvent(int dialogID)
+    {
+        Debug.Log("ëŒ€í™”ìƒì ì¶œë ¥ : " + dialogID);
+    }
+    public void CallAutoAction(int actionID)
+    {
+        AutoAction action = autoActions[actionID];
+        action.Action();
+    }
     public void BuildSpeechBubbleObject()
     {
-        Vector3 pos = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + (renderer.sprite.rect.size.y * gameObject.transform.localScale.y / 2 + 50) * axis_celibration, 0); //¸»Ç³¼± ³ôÀÌ ¼³Á¤
+        Vector3 pos = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + (renderer.sprite.rect.size.y * gameObject.transform.localScale.y / 2 + 50) * axis_celibration, 0); //ë§í’ì„  ë†’ì´ ì„¤ì •
         Vector3 rot = new Vector3(0, 0, 0);
         speech_bubble_object = Instantiate(speech_bubble_prefab, pos, Quaternion.Euler(rot), null);
     }
+    
 
     public void BuildSpeechBubbleObject(GameObject talker)
     {
         renderer = talker.GetComponent<SpriteRenderer>();
-        Vector3 pos = new Vector3(talker.transform.position.x, talker.transform.position.y + (renderer.sprite.rect.size.y * talker.transform.localScale.y / 2 + 50) * axis_celibration, 0); //¸»Ç³¼± ³ôÀÌ ¼³Á¤
+        Vector3 pos = new Vector3(talker.transform.position.x, talker.transform.position.y + (renderer.sprite.rect.size.y * talker.transform.localScale.y / 2 + 50) * axis_celibration, 0); //ë§í’ì„  ë†’ì´ ì„¤ì •
         speech_bubble_object.transform.position = pos;
     }
 
     public void StartConversation()
     {
+        CallAutoAction(0);//í…ŒìŠ¤íŠ¸ ëª©ì ì„ ê¼­ ì§€ì›Œì•¼í•¨
         if (isTalking)
             return;
         isTalking = true;
-        //¸»Ç³¼± »ı¼º
+        //ë§í’ì„  ìƒì„±
         BuildSpeechBubbleObject();
 
-        //Conversation ÄÚ·çÆ¾ È£Ãâ
+        //Conversation ì½”ë£¨í‹´ í˜¸ì¶œ
         if (!isConversationCourintRunning)
             StartCoroutine(Conversation(speech_bubble_object));
 
@@ -98,38 +113,38 @@ public class DialogManager : MonoBehaviour
     {
         isConversationCourintRunning = true;
 
-        RectTransform rectTransform = speech_bubble_object.GetComponent<RectTransform>(); //¸»Ç³¼± transform
+        RectTransform rectTransform = speech_bubble_object.GetComponent<RectTransform>(); //ë§í’ì„  transform
 
-        //´ë»ç Ãâ·Â ¼öÇà
-        TextMeshProUGUI textMesh = speech_bubble_object.transform.GetChild(2).GetComponent<TextMeshProUGUI>(); //¸»Ç³¼±¼Ó ÅØ½ºÆ®»óÀÚ
-        index = id - 1; //IDºÎÅÍ Conversation ½ÃÀÛ, ½ÇÁ¦·Î´Â Ã¹¹øÂ° ¿ø¼Ò°¡ ID 1 ÀÌ¹Ç·Î id¿¡¼­ ÇÏ³ª »©¼­ ÀúÀåÇÒ ¿¹Á¤
+        //ëŒ€ì‚¬ ì¶œë ¥ ìˆ˜í–‰
+        TextMeshProUGUI textMesh = speech_bubble_object.transform.GetChild(2).GetComponent<TextMeshProUGUI>(); //ë§í’ì„ ì† í…ìŠ¤íŠ¸ìƒì
+        index = id - 1; //IDë¶€í„° Conversation ì‹œì‘, ì‹¤ì œë¡œëŠ” ì²«ë²ˆì§¸ ì›ì†Œê°€ ID 1 ì´ë¯€ë¡œ idì—ì„œ í•˜ë‚˜ ë¹¼ì„œ ì €ì¥í•  ì˜ˆì •
 
         string script = reader.GetContent(index);
         string dialogNo = reader.GetDialogNo(index);
         string characterid = reader.GetCharacterid(index);
 
-        while (script != "" && (reader.GetDialogNo(index) == dialogNo || reader.GetDialogNo(index) == "100" || preIndex + 1 == index))  //´ëÈ­ id ´Ş¶óÁú ¶§±îÁö
+        while (script != "" && (reader.GetDialogNo(index) == dialogNo || reader.GetDialogNo(index) == "100" || preIndex + 1 == index))  //ëŒ€í™” id ë‹¬ë¼ì§ˆ ë•Œê¹Œì§€
         {
             dialogNo = reader.GetDialogNo(index);
 
-            if (!characterid.Equals(reader.GetCharacterid(index)))  //Ä³¸¯ÅÍ À§Ä¡·Î ¸»Ç³¼± ÀÌµ¿
+            if (!characterid.Equals(reader.GetCharacterid(index)))  //ìºë¦­í„° ìœ„ì¹˜ë¡œ ë§í’ì„  ì´ë™
                 BuildSpeechBubbleObject(GameObject.FindWithTag(GetCharacter(Convert.ToInt32(reader.GetCharacterid(index)))));
             characterid = reader.GetCharacterid(index);
 
-            rectTransform.sizeDelta = new Vector2(CalculateSizeInPixel(script), bubbleHeight) * axis_celibration; //¸»Ç³¼± °è»ê ¼öÇà
+            rectTransform.sizeDelta = new Vector2(CalculateSizeInPixel(script), bubbleHeight) * axis_celibration; //ë§í’ì„  ê³„ì‚° ìˆ˜í–‰
             for (int i = 1; i < speech_bubble_object.transform.childCount; i++)
             {
-                Transform child = speech_bubble_object.transform.GetChild(i); //ÀÚ½Ä ¿ÀºêÁ§Æ® ÇÑ°³
-                                                                              //¸»Ç³¼± ¼¼¸ğ¸ğ¾ç ºÎºĞÀº º°µµÃ³¸®
+                Transform child = speech_bubble_object.transform.GetChild(i); //ìì‹ ì˜¤ë¸Œì íŠ¸ í•œê°œ
+                                                                              //ë§í’ì„  ì„¸ëª¨ëª¨ì–‘ ë¶€ë¶„ì€ ë³„ë„ì²˜ë¦¬
 
                 TextMeshProUGUI textbox = speech_bubble_object.transform.GetChild(i).GetComponent<TextMeshProUGUI>();
-                if (textbox) //ÅØ½ºÆ® »óÀÚ°¡ µé¾îÀÖ´Â ¿ÀºêÁ§Æ®ÀÏ¶§
+                if (textbox) //í…ìŠ¤íŠ¸ ìƒìê°€ ë“¤ì–´ìˆëŠ” ì˜¤ë¸Œì íŠ¸ì¼ë•Œ
                 {
-                    child.GetComponent<RectTransform>().sizeDelta = new Vector2(CalculateSizeInPixel(script) - 30, bubbleContentHeight) * axis_celibration; //¾çÂÊ ¿©¹é 15ÀÌ¾î¾ß ÇÏ¹Ç·Î 30 Â÷°¨
+                    child.GetComponent<RectTransform>().sizeDelta = new Vector2(CalculateSizeInPixel(script) - 30, bubbleContentHeight) * axis_celibration; //ì–‘ìª½ ì—¬ë°± 15ì´ì–´ì•¼ í•˜ë¯€ë¡œ 30 ì°¨ê°
                 }
                 else
                 {
-                    child.GetComponent<RectTransform>().sizeDelta = new Vector2(CalculateSizeInPixel(script), bubbleContentHeight) * axis_celibration; //¸»Ç³¼± °è»ê ¼öÇà
+                    child.GetComponent<RectTransform>().sizeDelta = new Vector2(CalculateSizeInPixel(script), bubbleContentHeight) * axis_celibration; //ë§í’ì„  ê³„ì‚° ìˆ˜í–‰
                 }
             }
 
@@ -137,27 +152,27 @@ public class DialogManager : MonoBehaviour
             textSpeed = 0.1f;
             isTalkFaster = false;
             yield return new WaitForSeconds(0.05f);
-            for (int i = 0; i < script.Length; i++) //´ë»ç Å¸ÀÚÃ³·³ Ãâ·Â
+            for (int i = 0; i < script.Length; i++) //ëŒ€ì‚¬ íƒ€ìì²˜ëŸ¼ ì¶œë ¥
             {
                 textMesh.text += script[i];
-                if (reader.GetSelected(index).Equals("")) // ¼±ÅÃÁö°¡ ¾ø´Â ´ëÈ­¸¸ ºü¸£°Ô
+                if (reader.GetSelected(index).Equals("")) // ì„ íƒì§€ê°€ ì—†ëŠ” ëŒ€í™”ë§Œ ë¹ ë¥´ê²Œ
                     isTalkFaster = true;
                 yield return new WaitForSecondsRealtime(textSpeed);
             }
 
-            //´ëÈ­ Á¾·ù¿¡ µû¶ó ¿©±â¼­ ºĞ±â
+            //ëŒ€í™” ì¢…ë¥˜ì— ë”°ë¼ ì—¬ê¸°ì„œ ë¶„ê¸°
 
-            if (selected_Prefab != null && !reader.GetSelected(index).Equals(""))   //¼±ÅÃÁö »ı¼º
+            if (selected_Prefab != null && !reader.GetSelected(index).Equals(""))   //ì„ íƒì§€ ìƒì„±
             {
                 string[] selectDialog = reader.GetSelected(index).Split("&");
                 int maxlength = 0;
                 for (int i = 0; i < selectDialog.Length; i++)
                     maxlength = Math.Max(maxlength, CalculateSizeInPixel(selectDialog[i]));
 
-                //¸»Ç³¼± ÀÌ¹ÌÁö Å©±â Ãß°¡¿¹Á¤
+                //ë§í’ì„  ì´ë¯¸ì§€ í¬ê¸° ì¶”ê°€ì˜ˆì •
                 selectedObject = Instantiate(selected_Prefab, new Vector3(rectTransform.position.x + rectTransform.sizeDelta.x / 2 + 1f, speech_bubble_object.transform.position.y + 0.1f, 0), Quaternion.identity);
 
-                if (!reader.GetImpossibleIndex(index).Equals("")) // ¼±ÅÃÁö ºÒ°¡ ±â´É
+                if (!reader.GetImpossibleIndex(index).Equals("")) // ì„ íƒì§€ ë¶ˆê°€ ê¸°ëŠ¥
                     selectedObject.GetComponent<SleepManager>().impossibleindex = Convert.ToInt32(reader.GetImpossibleIndex(index));
 
                 for (int i = 0; i < selectDialog.Length; i++)
@@ -167,24 +182,24 @@ public class DialogManager : MonoBehaviour
                 }
             }
 
-            yield return new WaitForSeconds(0.5f); //´ë»ç 2°³ ÇÑ¹ø¿¡ ³Ñ¾î°¡´Â°Å ¹æÁö
-            while (!Input.GetKeyDown(KeyCode.E) && !Input.GetKeyDown(KeyCode.Return)) //¹öÆ° ´­¸±¶§±îÁö ±â´Ù¸²
+            yield return new WaitForSeconds(0.5f); //ëŒ€ì‚¬ 2ê°œ í•œë²ˆì— ë„˜ì–´ê°€ëŠ”ê±° ë°©ì§€
+            while (!Input.GetKeyDown(KeyCode.E) && !Input.GetKeyDown(KeyCode.Return)) //ë²„íŠ¼ ëˆŒë¦´ë•Œê¹Œì§€ ê¸°ë‹¤ë¦¼
             {
                 yield return new WaitForSeconds(Time.deltaTime);
             }
 
             TutorialBed();
 
-            if (isDeleteSelect) // ¼±ÅÃÁö »èÁ¦
+            if (isDeleteSelect) // ì„ íƒì§€ ì‚­ì œ
             {
                 Destroy(selectedObject);
                 isDeleteSelect = false;
             }
 
-            if (!reader.GetChangeId(index).Equals(""))  //ÀÎµ¦½º º¯°æ
+            if (!reader.GetChangeId(index).Equals(""))  //ì¸ë±ìŠ¤ ë³€ê²½
                 index = Convert.ToInt32(reader.GetChangeId(index)) - 2;
 
-            if (reader.GetDialogNo(index) == "100") //´ë»ç µÇµ¹¾Æ°¡±â
+            if (reader.GetDialogNo(index) == "100") //ëŒ€ì‚¬ ë˜ëŒì•„ê°€ê¸°
                 index = preIndex;
 
             index++;
@@ -193,20 +208,20 @@ public class DialogManager : MonoBehaviour
             script = reader.GetContent(index);
         }
 
-        //ºĞ±â¹®Àº ÇÊ¿äÇÏ¸é ³ªÁß¿¡ ±¸Çö ¿¹Á¤
+        //ë¶„ê¸°ë¬¸ì€ í•„ìš”í•˜ë©´ ë‚˜ì¤‘ì— êµ¬í˜„ ì˜ˆì •
 
-        //¸»Ç³¼± »èÁ¦
+        //ë§í’ì„  ì‚­ì œ
         EndConversation();
         isConversationCourintRunning = false;
         FindObjectOfType<PlayerControllerScript>().isImpossibleMove = false;
     }
 
-    //°è»ê ¼öÇàÇÏ´Â ÇÔ¼ö ÇÊ¿ä
+    //ê³„ì‚° ìˆ˜í–‰í•˜ëŠ” í•¨ìˆ˜ í•„ìš”
     int CalculateSizeInPixel(string s)
     {
         int size = 0;
         char[] values = s.ToCharArray();
-        size += 50;//¾Õ+µÚ ¿©¹é
+        size += 50;//ì•+ë’¤ ì—¬ë°±
         foreach (char c in values)
         {
 
