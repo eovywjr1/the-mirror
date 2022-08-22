@@ -125,21 +125,38 @@ public class PlayerControllerScript : MonoBehaviour
         float absAxisHorizontal = Mathf.Abs(axisHorizontal);
         float absAxisVertical = Mathf.Abs(axisVertical);
 
-        if (absAxisHorizontal > absAxisVertical && axisHorizontal != 0)
+        if ((Input.GetKey("w") || Input.GetKey("s")) && (Input.GetKey("a") || Input.GetKey("d")) && axisVertical != 0)
+        {
+            if (axisVertical > 0)
+                RotateHorizontal(Convert.ToInt32(axisHorizontal / Mathf.Abs(axisHorizontal)));
+            else
+                RotateVertical(Convert.ToInt32(axisVertical / Mathf.Abs(axisVertical)));
+        }
+        else if ((Input.GetKey("a") || Input.GetKey("d")) && axisHorizontal != 0)
+        {
+            RotateHorizontal(Convert.ToInt32(axisHorizontal / Mathf.Abs(axisHorizontal)));
+        }
+        else if ((Input.GetKey("w") || Input.GetKey("s")) && axisVertical != 0)
+        {
+            RotateVertical(Convert.ToInt32(axisVertical / Mathf.Abs(axisVertical)));
+        }
+
+        /*if (absAxisVertical > 0 && absAxisHorizontal > 0 && axisVertical != 0)
+        {
+            if (axisVertical > 0)
+                RotateHorizontal(Convert.ToInt32(axisHorizontal / Mathf.Abs(axisHorizontal)));
+            else
+                RotateVertical(Convert.ToInt32(axisVertical / Mathf.Abs(axisVertical)));
+        }
+        else if (absAxisHorizontal > absAxisVertical && axisHorizontal != 0)
         {
             RotateHorizontal(Convert.ToInt32(axisHorizontal / Mathf.Abs(axisHorizontal)));
         }
         else if (absAxisVertical > absAxisHorizontal && axisVertical != 0)
         {
             RotateVertical(Convert.ToInt32(axisVertical / Mathf.Abs(axisVertical)));
-        }
-        else if(absAxisVertical == absAxisHorizontal && axisVertical != 0)
-        {
-            if(absAxisVertical > 0)
-                RotateHorizontal(Convert.ToInt32(axisHorizontal / Mathf.Abs(axisHorizontal)));
-            else
-                RotateVertical(Convert.ToInt32(axisVertical / Mathf.Abs(axisVertical)));
-        }
+        }*/
+
 
         previousSpeedX = axisHorizontal;
         previousSpeedY = axisVertical;
@@ -176,7 +193,6 @@ public class PlayerControllerScript : MonoBehaviour
     {
         //캐릭터 회전
         int index = (int)(0.5 * direction + 0.5f);
-        Debug.Log(index);
         playerAnimationController.runtimeAnimatorController = playerAnimationontrollerList[index];
         //콜라이더 회전
         if(interactor != null)
