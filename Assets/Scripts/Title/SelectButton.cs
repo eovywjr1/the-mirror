@@ -8,7 +8,8 @@ public class SelectButton : SelecteMoveScript
     public GameObject start;
     public GameObject load;
     public GameObject quit;
-
+    public GameObject quitAnim;
+    public Animator startingAnim;
     // Update is called once per frame
     void Update()
     {
@@ -59,6 +60,13 @@ public class SelectButton : SelecteMoveScript
             if (index == 0)
             {
                 Debug.Log("게임 실행");
+                startingAnim = GetComponent<Animator>();
+                startingAnim.SetBool("StartLoad", true);
+                start.SetActive(false);
+                load.SetActive(false);
+                quit.SetActive(false);
+                quitAnim.SetActive(false);
+                
             }
             else if (index == 1)
             {
