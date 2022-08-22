@@ -8,9 +8,17 @@ using UnityEngine.SceneManagement;
 public class TitleScript : MonoBehaviour
 {
     public Animator startingAnim;
+    public GameObject start;
+    public GameObject load;
+    public GameObject quit;
+    public GameObject quitAnim;
     public void StartGame()//게임 실행
     {
         Debug.Log("게임 실행");
+        start.SetActive(false);
+        load.SetActive(false);
+        quit.SetActive(false);
+        quitAnim.SetActive(false);
         startingAnim = GetComponent<Animator>();
         startingAnim.SetBool("StartLoad", true);
     }
