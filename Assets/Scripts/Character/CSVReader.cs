@@ -26,7 +26,7 @@ public class CSVReader
         line = reader.ReadLine();
         while (line != null)
         {
-            string[] items = line.Split(",");
+            string[] items = line.Split("@");
             names.Add(items[1]);
             contents.Add(items[2]);
             line = reader.ReadLine();//이거 없어서 무한반복 발생;;
