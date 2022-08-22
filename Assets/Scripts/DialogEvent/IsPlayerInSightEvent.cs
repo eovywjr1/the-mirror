@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+[System.Serializable]
 public class IsPlayerInSightEvent : DialogEvent
 {
 
@@ -18,9 +18,11 @@ public class IsPlayerInSightEvent : DialogEvent
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
+        
         if(other.tag == "Player")
         {
             eventCallDelegate.Invoke(dialogID);
+            
         }
         
     }
