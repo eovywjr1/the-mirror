@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -8,7 +9,7 @@ public class CSVReader
 
     const string path = "Assets\\script.CSV";
     bool isLoaded = false;//파일 로딩 확인
-
+    int itemCount = 8;//csv 파일 항목 개수
     int lines = 0;//줄 수 기록
     //ID는 그냥 csv 파일에만 기록, 불러오지는 않을 예정
     List<string> []dialogList;
@@ -18,8 +19,8 @@ public class CSVReader
         StreamReader reader = new StreamReader(path);
 
         //인스턴스 생성
-        dialogList = new List<string>[7];
-        for (int i = 0; i < 7; i++)
+        dialogList = new List<string>[itemCount];
+        for (int i = 0; i < itemCount; i++)
             dialogList[i] = new List<string>();
 
         string line = reader.ReadLine(); //맨 윗줄 패스
@@ -28,7 +29,7 @@ public class CSVReader
         {
             string[] items = line.Split("@");
 
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < itemCount; i++)
                 dialogList[i].Add(items[i]);
             line = reader.ReadLine();   //이거 없어서 무한반복 발생;;
             lines++;
@@ -95,5 +96,11 @@ public class CSVReader
         if (CheckInvalidIndex(index))
             return "";
         return dialogList[6][index];
+    }
+    public string GetEventNumber(int index)
+    {
+        if (CheckInvalidIndex(index))
+            return "";
+        return dialogList[7][index];
     }
 }

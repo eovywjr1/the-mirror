@@ -39,6 +39,9 @@ public class DialogManager : MonoBehaviour
     const float bubbleHeight = 60; //말풍선 세로 크기
     float textSpeed;
 
+    GameObject player; //플레이어 고정 오브젝트
+    PlayerControllerScript playerControllerScript;
+
     List<int> impossibleFaster = new List<int>() { 5 };
 
     public void Awake()
@@ -49,6 +52,8 @@ public class DialogManager : MonoBehaviour
     public void Start()
     {
         renderer = gameObject.GetComponent<SpriteRenderer>();
+        player = GameObject.FindGameObjectWithTag("Player");
+        playerControllerScript = player.GetComponent<PlayerControllerScript>();
     }
 
     private void Update()
@@ -57,12 +62,15 @@ public class DialogManager : MonoBehaviour
             textSpeed = 0.01f;
     }
 
-    public void CallDialogByEvent(int dialogID)
+    public void CallDialogByEvent(int _dialogID)
     {
-        Debug.Log("대화상자 출력 : " + dialogID);
+        SetId(_dialogID);
+        StartConversation();
+
     }
     public void CallAutoAction(int actionID)
     {
+        playerControllerScript.isImpossibleMove = false;
         AutoAction action = autoActions[actionID];
         action.Action();
     }
@@ -83,10 +91,15 @@ public class DialogManager : MonoBehaviour
 
     public void StartConversation()
     {
-        CallAutoAction(0);//테스트 목적임 꼭 지워야함
+
         if (isTalking)
             return;
         isTalking = true;
+        //상호작용 이외의 원인으로도 대화가 시작될수 있으므로 대화중에는 플레이어 정지(어차피 npc는 알아서 멈춰있지 않을까?)
+        if(!playerControllerScript.isImpossibleMove)
+            playerControllerScript.isImpossibleMove = true;
+
+
         //말풍선 생성
         BuildSpeechBubbleObject();
 
@@ -118,11 +131,12 @@ public class DialogManager : MonoBehaviour
         //대사 출력 수행
         TextMeshProUGUI textMesh = speech_bubble_object.transform.GetChild(2).GetComponent<TextMeshProUGUI>(); //말풍선속 텍스트상자
         index = id - 1; //ID부터 Conversation 시작, 실제로는 첫번째 원소가 ID 1 이므로 id에서 하나 빼서 저장할 예정
-
         string script = reader.GetContent(index);
         string dialogNo = reader.GetDialogNo(index);
         string characterid = reader.GetCharacterid(index);
+        string eventNumber = reader.GetEventNumber(index);
 
+        BuildSpeechBubbleObject(GameObject.FindWithTag(GetCharacter(Convert.ToInt32(reader.GetCharacterid(index))))); //처음 대화 시도 시 dialogmanager가 갖고 있는 오브젝트가 처음에 말을 시작하는 대상이 아닐 경우에 대비(임시방편)
         while (script != "" && (reader.GetDialogNo(index) == dialogNo || reader.GetDialogNo(index) == "100" || preIndex + 1 == index))  //대화 id 달라질 때까지
         {
             dialogNo = reader.GetDialogNo(index);
@@ -195,6 +209,14 @@ public class DialogManager : MonoBehaviour
                 Destroy(selectedObject);
                 isDeleteSelect = false;
             }
+            //대화 이후 행동 처리
+
+            eventNumber = reader.GetEventNumber(index);
+            if (eventNumber != "")
+            {
+                Debug.Log(eventNumber);
+                break;
+            }
 
             if (!reader.GetChangeId(index).Equals(""))  //인덱스 변경
                 index = Convert.ToInt32(reader.GetChangeId(index)) - 2;
@@ -208,7 +230,13 @@ public class DialogManager : MonoBehaviour
             script = reader.GetContent(index);
         }
 
-        //분기문은 필요하면 나중에 구현 예정
+        if (eventNumber != "")
+        {
+            Debug.Log(eventNumber);
+            int actionID = Convert.ToInt32(eventNumber);
+            CallAutoAction(actionID);
+        }
+
 
         //말풍선 삭제
         EndConversation();
@@ -258,6 +286,7 @@ public class DialogManager : MonoBehaviour
     public void DestroyBubble()
     {
         Destroy(speech_bubble_object);
+        playerControllerScript.isImpossibleMove = false;
     }
 
     String GetCharacter(int id)

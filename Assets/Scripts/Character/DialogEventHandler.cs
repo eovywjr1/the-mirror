@@ -21,11 +21,13 @@ public class DialogEventHandler : MonoBehaviour
         else
             dialogManager = GetComponent<DialogManager>(); //value does not fall in ???
         eventCallDelegate = dialogManager.CallDialogByEvent;
+        
         for(int i=0; i<dialogEvents.Length; i++)
         {
 
-            dialogEvents[i].InitEvent(i, eventCallDelegate);
+            dialogEvents[i].InitEvent(eventCallDelegate);
         }
+        
     }
 
     // Update is called once per frame

@@ -22,6 +22,9 @@ public class PlayerControllerScript : MonoBehaviour
     [SerializeField]
     float animationBreakThreshold;      //에니매이션에 해당
 
+    float axisHorizontal;//가로입력
+    float axisVertical;//세로입력
+
     Animator playerAnimationController; //걸음걸이 애니메이션 컨트롤러
     ScreenCoordinateCorrector corrector; //좌표 보정용
     GameObject interactor; //상호작용 범위 콜라이더
@@ -58,13 +61,26 @@ public class PlayerControllerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        ProcessInteractEvent();
-        isShiftPressed = Input.GetKey(KeyCode.LeftShift);
+        if(Input.GetKeyDown(KeyCode.E))
+            ProcessInteractEvent();
+        //isShiftPressed = Input.GetKey(KeyCode.LeftShift);
     }
-
-    private void ProcessInteractEvent()
+    //외부에서 자동 컨트롤을 위해 외부에서 axis 값 입력받는 함수들
+    public void SetHorizontalAxis(float axis)
     {
-        if (Input.GetKeyDown(KeyCode.E) && !isImpossibleMove && gameObject.tag == "Player")
+        axisHorizontal = axis;
+    }
+    public void SetVerticalAxis(float axis)
+    {
+        axisVertical = axis;
+    }
+    public void SetShiftPressed(bool b)
+    {
+        isShiftPressed = b;
+    }
+    public void ProcessInteractEvent()
+    {
+        if ( !isImpossibleMove && gameObject.tag == "Player")
         {
             interactManageer.Interact(0);
             playerAnimationController.SetInteger("state", 0);
@@ -76,8 +92,8 @@ public class PlayerControllerScript : MonoBehaviour
     {
         if (!isImpossibleMove)
         {
-            float axisHorizontal = Input.GetAxis("Horizontal");
-            float axisVertical = Input.GetAxis("Vertical");
+            //float axisHorizontal = Input.GetAxis("Horizontal");
+            //float axisVertical = Input.GetAxis("Vertical");
 
             Move(axisHorizontal, axisVertical);
             UpdateAnimationParameter();
