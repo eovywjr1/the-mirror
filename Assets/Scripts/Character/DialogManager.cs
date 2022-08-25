@@ -34,7 +34,6 @@ public class DialogManager : MonoBehaviour
     public bool bedSettutorialindex;
     public bool isDeleteSelect;
 
-    CSVReader reader;
     const float bubbleContentHeight = 40; //말풍선 텍스트 부분 가로크기
     const float bubbleHeight = 60; //말풍선 세로 크기
     float textSpeed;
@@ -44,11 +43,6 @@ public class DialogManager : MonoBehaviour
 
     List<int> impossibleFaster = new List<int>() { 5 };
 
-    public void Awake()
-    {
-        reader = new CSVReader();
-
-    }
     public void Start()
     {
         renderer = gameObject.GetComponent<SpriteRenderer>();
@@ -131,19 +125,21 @@ public class DialogManager : MonoBehaviour
         //대사 출력 수행
         TextMeshProUGUI textMesh = speech_bubble_object.transform.GetChild(2).GetComponent<TextMeshProUGUI>(); //말풍선속 텍스트상자
         index = id - 1; //ID부터 Conversation 시작, 실제로는 첫번째 원소가 ID 1 이므로 id에서 하나 빼서 저장할 예정
-        string script = reader.GetContent(index);
-        string dialogNo = reader.GetDialogNo(index);
-        string characterid = reader.GetCharacterid(index);
-        string eventNumber = reader.GetEventNumber(index);
+        List<string> dialogList = CSVReader.GetLine(index);
 
-        BuildSpeechBubbleObject(GameObject.FindWithTag(GetCharacter(Convert.ToInt32(reader.GetCharacterid(index))))); //처음 대화 시도 시 dialogmanager가 갖고 있는 오브젝트가 처음에 말을 시작하는 대상이 아닐 경우에 대비(임시방편)
-        while (script != "" && (reader.GetDialogNo(index) == dialogNo || reader.GetDialogNo(index) == "100" || preIndex + 1 == index))  //대화 id 달라질 때까지
+        string dialogNo = dialogList[0];
+        string characterid = dialogList[2];
+        string eventNumber = dialogList[7];
+        string script = dialogList[3];
+
+        BuildSpeechBubbleObject(GameObject.FindWithTag(GetCharacter(Convert.ToInt32(dialogList[2])))); //처음 대화 시도 시 dialogmanager가 갖고 있는 오브젝트가 처음에 말을 시작하는 대상이 아닐 경우에 대비(임시방편)
+        while (!script.Equals("") && (dialogList[0] == dialogNo || dialogList[0].Equals("100") || preIndex + 1 == index))  //대화 id 달라질 때까지
         {
-            dialogNo = reader.GetDialogNo(index);
+            dialogNo = dialogList[0];
 
-            if (!characterid.Equals(reader.GetCharacterid(index)))  //캐릭터 위치로 말풍선 이동
-                BuildSpeechBubbleObject(GameObject.FindWithTag(GetCharacter(Convert.ToInt32(reader.GetCharacterid(index)))));
-            characterid = reader.GetCharacterid(index);
+            if (!characterid.Equals(dialogList[2]))  //캐릭터 위치로 말풍선 이동
+                BuildSpeechBubbleObject(GameObject.FindWithTag(GetCharacter(Convert.ToInt32(dialogList[2]))));
+            characterid = dialogList[2];
 
             rectTransform.sizeDelta = new Vector2(CalculateSizeInPixel(script), bubbleHeight) * axis_celibration; //말풍선 계산 수행
             for (int i = 1; i < speech_bubble_object.transform.childCount; i++)
@@ -169,16 +165,16 @@ public class DialogManager : MonoBehaviour
             for (int i = 0; i < script.Length; i++) //대사 타자처럼 출력
             {
                 textMesh.text += script[i];
-                if (reader.GetSelected(index).Equals("")) // 선택지가 없는 대화만 빠르게
+                if (dialogList[4].Equals("")) // 선택지가 없는 대화만 빠르게
                     isTalkFaster = true;
                 yield return new WaitForSecondsRealtime(textSpeed);
             }
 
             //대화 종류에 따라 여기서 분기
 
-            if (selected_Prefab != null && !reader.GetSelected(index).Equals(""))   //선택지 생성
+            if (selected_Prefab != null && !dialogList[4].Equals(""))   //선택지 생성
             {
-                string[] selectDialog = reader.GetSelected(index).Split("&");
+                string[] selectDialog = dialogList[4].Split("&");
                 int maxlength = 0;
                 for (int i = 0; i < selectDialog.Length; i++)
                     maxlength = Math.Max(maxlength, CalculateSizeInPixel(selectDialog[i]));
@@ -186,8 +182,8 @@ public class DialogManager : MonoBehaviour
                 //말풍선 이미지 크기 추가예정
                 selectedObject = Instantiate(selected_Prefab, new Vector3(rectTransform.position.x + rectTransform.sizeDelta.x / 2 + 1f, speech_bubble_object.transform.position.y + 0.1f, 0), Quaternion.identity);
 
-                if (!reader.GetImpossibleIndex(index).Equals("")) // 선택지 불가 기능
-                    selectedObject.GetComponent<SleepManager>().impossibleindex = Convert.ToInt32(reader.GetImpossibleIndex(index));
+                if (!dialogList[5].Equals("")) // 선택지 불가 기능
+                    selectedObject.GetComponent<SleepManager>().impossibleindex = Convert.ToInt32(dialogList[5]);
 
                 for (int i = 0; i < selectDialog.Length; i++)
                 {
@@ -211,24 +207,24 @@ public class DialogManager : MonoBehaviour
             }
             //대화 이후 행동 처리
 
-            eventNumber = reader.GetEventNumber(index);
-            if (eventNumber != "")
+            eventNumber = dialogList[7];
+            if (!eventNumber.Equals(""))
             {
                 Debug.Log(eventNumber);
                 break;
             }
 
-            if (!reader.GetChangeId(index).Equals(""))  //인덱스 변경
-                index = Convert.ToInt32(reader.GetChangeId(index)) - 2;
-
-            if (reader.GetDialogNo(index) == "100") //대사 되돌아가기
-                index = preIndex;
+            if (!dialogList[6].Equals(""))  //인덱스 변경
+                index = Convert.ToInt32(dialogList[6]) - 2;
 
             index++;
 
-
-            script = reader.GetContent(index);
+            dialogList = CSVReader.GetLine(index);
+            script = dialogList[3];
         }
+
+        if (dialogList[0].Equals("100")) //대사 되돌아가기
+            index = preIndex;
 
         if (eventNumber != "")
         {
@@ -236,7 +232,6 @@ public class DialogManager : MonoBehaviour
             int actionID = Convert.ToInt32(eventNumber);
             CallAutoAction(actionID);
         }
-
 
         //말풍선 삭제
         EndConversation();
@@ -267,7 +262,6 @@ public class DialogManager : MonoBehaviour
     {
         if (bedSettutorialindex)
         {
-            preIndex = index - 1;
             index = -1;
             bedSettutorialindex = false;
         }

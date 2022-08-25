@@ -4,24 +4,19 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-public class CSVReader
+public static class CSVReader
 {
 
     const string path = "Assets\\script.CSV";
-    bool isLoaded = false;//파일 로딩 확인
-    int itemCount = 8;//csv 파일 항목 개수
-    int lines = 0;//줄 수 기록
+    static bool isLoaded = false;//파일 로딩 확인
+    static int itemCount = 8;//csv 파일 항목 개수
+    static int lines = 0;//줄 수 기록
     //ID는 그냥 csv 파일에만 기록, 불러오지는 않을 예정
-    List<string> []dialogList;
+    static List<List<string>> dialogList = new List<List<string>>();
 
-    public CSVReader()
+    static CSVReader()
     {
         StreamReader reader = new StreamReader(path);
-
-        //인스턴스 생성
-        dialogList = new List<string>[itemCount];
-        for (int i = 0; i < itemCount; i++)
-            dialogList[i] = new List<string>();
 
         string line = reader.ReadLine(); //맨 윗줄 패스
         line = reader.ReadLine();
@@ -29,19 +24,24 @@ public class CSVReader
         {
             string[] items = line.Split("@");
 
+            List<string> temp = new List<string>();
             for (int i = 0; i < itemCount; i++)
-                dialogList[i].Add(items[i]);
+                temp.Add(items[i]);
+
+            dialogList.Add(temp);
+
             line = reader.ReadLine();   //이거 없어서 무한반복 발생;;
             lines++;
         }
         isLoaded = true;
     }
 
-    public int GetLine()
+    public static int GetLine()
     {
         return lines;
     }
-    public bool CheckInvalidIndex(int index)
+
+    public static bool CheckInvalidIndex(int index)
     {
         if (lines <= index || index < 0)
         {
@@ -51,56 +51,15 @@ public class CSVReader
             return false;
     }
 
-    public string GetDialogNo(int index)
-    {
-        if (CheckInvalidIndex(index))
-            return "";
-        return dialogList[0][index];
-    }
-
-    public string GetCharacterid(int index)
-    {
-        if (CheckInvalidIndex(index))
-            return "";
-        return dialogList[2][index];
-    }
-
-    public string GetContent(int index)
-    {
-        if (CheckInvalidIndex(index))
-            return "";
-        return dialogList[3][index];
-    }
-
-    public string GetSelected(int index)
-    {
-        if (CheckInvalidIndex(index))
-            return "";
-        return dialogList[4][index];
-    }
-
-    public bool IsLoaded()
+    public static bool IsLoaded()
     {
         return isLoaded;
     }
 
-    public string GetImpossibleIndex(int index)
+    public static List<string> GetLine(int index)
     {
-        if (CheckInvalidIndex(index))
-            return "";
-        return dialogList[5][index];
-    }
-
-    public string GetChangeId(int index)
-    {
-        if (CheckInvalidIndex(index))
-            return "";
-        return dialogList[6][index];
-    }
-    public string GetEventNumber(int index)
-    {
-        if (CheckInvalidIndex(index))
-            return "";
-        return dialogList[7][index];
+        if (!CheckInvalidIndex(index))
+            return null;
+        return dialogList[index];
     }
 }
