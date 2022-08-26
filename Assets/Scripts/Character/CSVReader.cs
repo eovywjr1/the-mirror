@@ -4,19 +4,18 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-public static class CSVReader
+public class CSVReader
 {
 
     const string path = "Assets\\script.CSV";
-    static bool isLoaded = false;//파일 로딩 확인
-    static int itemCount = 8;//csv 파일 항목 개수
-    static int lines = 0;//줄 수 기록
-    //ID는 그냥 csv 파일에만 기록, 불러오지는 않을 예정
+    static bool isLoaded = false;  //파일 로딩 확인
+    static int lines = 0;  //줄 수 기록
     static List<List<string>> dialogList = new List<List<string>>();
 
     static CSVReader()
     {
         StreamReader reader = new StreamReader(path);
+        int itemCount = 8;  //csv 파일 항목 개수
 
         string line = reader.ReadLine(); //맨 윗줄 패스
         line = reader.ReadLine();
@@ -36,12 +35,12 @@ public static class CSVReader
         isLoaded = true;
     }
 
-    public static int GetLine()
+    public int GetLine()
     {
         return lines;
     }
 
-    public static bool CheckInvalidIndex(int index)
+    public bool CheckInvalidIndex(int index)
     {
         if (lines <= index || index < 0)
         {
@@ -51,12 +50,12 @@ public static class CSVReader
             return false;
     }
 
-    public static bool IsLoaded()
+    public bool IsLoaded()
     {
         return isLoaded;
     }
 
-    public static List<string> GetLine(int index)
+    public List<string> GetLine(int index)
     {
         if (!CheckInvalidIndex(index))
             return null;

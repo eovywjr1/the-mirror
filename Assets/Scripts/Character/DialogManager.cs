@@ -19,9 +19,10 @@ public class DialogManager : MonoBehaviour
     GameObject selected_Prefab;
     string path = "Assets\\script.CSV"; //스크립트 위치
 
+    CSVReader reader;
+
     [SerializeField]
     AutoAction[] autoActions; // Move 및 Scene에 해당하는 부분들
-
 
     GameObject speech_bubble_object;
     GameObject selectedObject;
@@ -42,6 +43,11 @@ public class DialogManager : MonoBehaviour
     PlayerControllerScript playerControllerScript;
 
     List<int> impossibleFaster = new List<int>() { 5 };
+
+    void Awake()
+    {
+        reader = new CSVReader();
+    }
 
     public void Start()
     {
@@ -125,7 +131,7 @@ public class DialogManager : MonoBehaviour
         //대사 출력 수행
         TextMeshProUGUI textMesh = speech_bubble_object.transform.GetChild(2).GetComponent<TextMeshProUGUI>(); //말풍선속 텍스트상자
         index = id - 1; //ID부터 Conversation 시작, 실제로는 첫번째 원소가 ID 1 이므로 id에서 하나 빼서 저장할 예정
-        List<string> dialogList = CSVReader.GetLine(index);
+        List<string> dialogList = reader.GetLine(index);
 
         string dialogNo = dialogList[0];
         string characterid = dialogList[2];
@@ -219,7 +225,7 @@ public class DialogManager : MonoBehaviour
 
             index++;
 
-            dialogList = CSVReader.GetLine(index);
+            dialogList = reader.GetLine(index);
             script = dialogList[3];
         }
 
