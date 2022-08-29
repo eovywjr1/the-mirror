@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class CSVReader
 {
-
     const string path = "Assets\\script.CSV";
     static bool isLoaded = false;  //파일 로딩 확인
     static int lines = 0;  //줄 수 기록
@@ -57,7 +56,7 @@ public class CSVReader
 
     public List<string> GetLine(int index)
     {
-        if (!CheckInvalidIndex(index))
+        if (CheckInvalidIndex(index))
             return null;
         return dialogList[index];
     }

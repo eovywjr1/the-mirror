@@ -19,8 +19,6 @@ public class MoveCamera : AutoAction
     {
         Debug.Log("얍");
         StartCoroutine(StartMove());
-        
-
     }
 
     // Start is called before the first frame update
@@ -32,11 +30,6 @@ public class MoveCamera : AutoAction
         dirVector = destination - cameraPosition; //처음위치->목적지
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     IEnumerator Move(GameObject target, Vector3 dir, float d)
     {
         float tmpDistance = 0.0f; //지금까지 이동거리
@@ -50,14 +43,12 @@ public class MoveCamera : AutoAction
             tmpDistance += dir.magnitude / moveTime * dt;
             yield return new WaitForSeconds(dt);
         }
-        
     }
+
     IEnumerator StartMove() //두 코루티이 동시에 실행되는거 방지
     {
         StartCoroutine(Move(camera, dirVector, distance));
         yield return new WaitForSeconds(remainTime + moveTime);
         StartCoroutine(Move(camera, -dirVector, distance));
     }
-
-
 }

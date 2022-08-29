@@ -17,7 +17,7 @@ public class SleepManager : SelecteMoveScript
 
     private void Awake()
     {
-        dialogManager = FindObjectOfType<PlayerControllerScript>().gameObject.GetComponent<DialogManager>();
+        dialogManager = GameManager.player.GetComponent<DialogManager>();
 
         selectActionList = new List<Action>();
         selectActionList.Add(YesSleep);

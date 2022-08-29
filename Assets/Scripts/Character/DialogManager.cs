@@ -39,10 +39,9 @@ public class DialogManager : MonoBehaviour
     const float bubbleHeight = 60; //말풍선 세로 크기
     float textSpeed;
 
-    GameObject player; //플레이어 고정 오브젝트
-    PlayerControllerScript playerControllerScript;
-
     List<int> impossibleFaster = new List<int>() { 5 };
+
+    PlayerControllerScript playerControllerScript;
 
     void Awake()
     {
@@ -51,9 +50,8 @@ public class DialogManager : MonoBehaviour
 
     public void Start()
     {
+        playerControllerScript = GameManager.playerControllerScript;
         renderer = gameObject.GetComponent<SpriteRenderer>();
-        player = GameObject.FindGameObjectWithTag("Player");
-        playerControllerScript = player.GetComponent<PlayerControllerScript>();
     }
 
     private void Update()
@@ -66,14 +64,15 @@ public class DialogManager : MonoBehaviour
     {
         SetId(_dialogID);
         StartConversation();
-
     }
+
     public void CallAutoAction(int actionID)
     {
         playerControllerScript.isImpossibleMove = false;
         AutoAction action = autoActions[actionID];
         action.Action();
     }
+
     public void BuildSpeechBubbleObject()
     {
         Vector3 pos = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + (renderer.sprite.rect.size.y * gameObject.transform.localScale.y / 2 + 50) * axis_celibration, 0); //말풍선 높이 설정
@@ -81,7 +80,6 @@ public class DialogManager : MonoBehaviour
         speech_bubble_object = Instantiate(speech_bubble_prefab, pos, Quaternion.Euler(rot), null);
     }
     
-
     public void BuildSpeechBubbleObject(GameObject talker)
     {
         renderer = talker.GetComponent<SpriteRenderer>();
@@ -91,7 +89,6 @@ public class DialogManager : MonoBehaviour
 
     public void StartConversation()
     {
-
         if (isTalking)
             return;
         isTalking = true;
@@ -99,15 +96,14 @@ public class DialogManager : MonoBehaviour
         if(!playerControllerScript.isImpossibleMove)
             playerControllerScript.isImpossibleMove = true;
 
-
         //말풍선 생성
         BuildSpeechBubbleObject();
 
         //Conversation 코루틴 호출
         if (!isConversationCourintRunning)
             StartCoroutine(Conversation(speech_bubble_object));
-
     }
+
     public void EndConversation()
     {
         if (!isTalking)
@@ -120,8 +116,8 @@ public class DialogManager : MonoBehaviour
         }
         Destroy(speech_bubble_object);
         isTalking = false;
-
     }
+
     public IEnumerator Conversation(GameObject speech_bubble_object)
     {
         isConversationCourintRunning = true;
@@ -242,7 +238,7 @@ public class DialogManager : MonoBehaviour
         //말풍선 삭제
         EndConversation();
         isConversationCourintRunning = false;
-        FindObjectOfType<PlayerControllerScript>().isImpossibleMove = false;
+        playerControllerScript.isImpossibleMove = false;
     }
 
     //계산 수행하는 함수 필요

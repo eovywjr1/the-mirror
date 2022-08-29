@@ -6,10 +6,10 @@ public class GetInputAxis : MonoBehaviour //단순히 키보드 입력을 플레이어에게 전
 {
 
     PlayerControllerScript playerControllerScript; //플레이어에 붙어있는 컴포넌트
-    // Start is called before the first frame update
+
     void Start()
     {
-        playerControllerScript = GetComponent<PlayerControllerScript>();
+        playerControllerScript = GameManager.playerControllerScript;
     }
 
     // Update is called once per frame

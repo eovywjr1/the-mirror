@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class FormalBeliverScript : PlayerControllerScript
+public class FormalBeliverScript : MoveScript
 {
-    // Start is called before the first frame update
     void Awake()
     {
         corrector = new ScreenCoordinateCorrector();

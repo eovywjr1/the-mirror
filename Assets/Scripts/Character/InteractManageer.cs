@@ -34,9 +34,9 @@ public class InteractManageer : MonoBehaviour
 
         if (otherObject.gameObject.name.Equals("Bed"))
         {
-            GameObject character = transform.parent.gameObject;
+            GameObject character = GameManager.player;
             conversationInteractionEventReceiver = character.GetComponent<ConversationInteractionEventReceiver>();
-            //character.GetComponent<DialogManager>().SetId(2);
+            character.GetComponent<DialogManager>().SetId(2);
         }
 
         //임시로 이렇게 하고 여유 있을 때 상속기능 활용해서 합칠 예정
