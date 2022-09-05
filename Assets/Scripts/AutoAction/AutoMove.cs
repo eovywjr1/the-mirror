@@ -10,27 +10,14 @@ public class AutoMove : AutoAction
     float speed;
     [SerializeField]
     GameObject target;
-    PlayerControllerScript playerControllerScript;
     [SerializeField]
     bool InteractAfterEnd;
+
     public override void Action()
     {
-        
         StartCoroutine(MoveToward(destinations[0]));
-        
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        playerControllerScript = target.GetComponent<PlayerControllerScript>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     IEnumerator MoveToward(Vector3 destination)
     {
         Vector3 startPosition = target.transform.position;
@@ -49,17 +36,17 @@ public class AutoMove : AutoAction
         float tmpDistanceY = 0;
         while ( Mathf.Abs(target.transform.position.x - startPosition.x) < distanceX)
         {
-            playerControllerScript.SetHorizontalAxis(dirX);
+            GameManager.playerControllerScript.SetHorizontalAxis(dirX);
 
             yield return new WaitForSeconds(Time.deltaTime);
         }
-        playerControllerScript.SetHorizontalAxis(0);
+        GameManager.playerControllerScript.SetHorizontalAxis(0);
         while(Mathf.Abs(target.transform.position.y - startPosition.y) < distanceY)
         {
-            playerControllerScript.SetVerticalAxis(dirY);
+            GameManager.playerControllerScript.SetVerticalAxis(dirY);
             yield return new WaitForSeconds(Time.deltaTime);
         }
-        playerControllerScript.SetVerticalAxis(0);
+        GameManager.playerControllerScript.SetVerticalAxis(0);
         if (InteractAfterEnd)
         {
             InteractAndFinish();
@@ -68,7 +55,7 @@ public class AutoMove : AutoAction
     }
     void InteractAndFinish() //이동 다 마치고 interact
     {
-        playerControllerScript.ProcessInteractEvent();
+        GameManager.playerControllerScript.ProcessInteractEvent();
     }
 
 }

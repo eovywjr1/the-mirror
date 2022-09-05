@@ -10,22 +10,22 @@ public class TeleportEventReceiver : InteractionEvent
     string locationCSVFile = "Assets\\location.csv";
     GameObject player;
     PlayerControllerScript playerControllerScript;
+
     public override void Approach(GameObject player)
     {
     }
 
     public override void Interact(GameObject player)
     {
-        player = GameObject.Find("Player");
-        playerControllerScript = player.GetComponent<PlayerControllerScript>();
+        player = GameManager.player;
+        playerControllerScript = GameManager.playerControllerScript;
         StartCoroutine(Teleport(player));
-        
-        
     }
 
     public override void StopInteract(GameObject player)
     {
     }
+
     IEnumerator Teleport(GameObject player)
     {
         if (playerControllerScript.isImpossibleMove)
@@ -41,6 +41,6 @@ public class TeleportEventReceiver : InteractionEvent
         int y = Convert.ToInt32(line.Split(',')[1]);
         yield return new WaitForSeconds(0.5f); //이거 효과 시간이랑 연동해야함.
         player.transform.position = new Vector2(x, y);
-        player.GetComponent<PlayerControllerScript>().isImpossibleMove = false;
+        playerControllerScript.isImpossibleMove = false;
     }
 }
