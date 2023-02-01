@@ -68,7 +68,7 @@
     1층 뒤들
 ![더미러 뒤뜰](https://user-images.githubusercontent.com/40791869/216076586-c4df1485-7b82-483c-bf40-bf77927b9dfd.png)
 
-    
+<br/><br/>
 ### 거울
 ![더미러거울](https://user-images.githubusercontent.com/40791869/216078687-1da72aa4-7943-4f20-8ea6-29a2c30dcaf0.gif)
 
