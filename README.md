@@ -27,10 +27,9 @@
 ## 구현 기능
 
 #### 캐릭터 이동
-
 ![캐릭터 이동](https://user-images.githubusercontent.com/40791869/215987720-7919ec59-601f-4055-b230-2d9642377104.gif
     
-    걷기, 달리기
+  - 걷기, 달리기
 
 #### 상호작용
 ![ezgif com-gif-maker (2)](https://user-images.githubusercontent.com/40791869/216067930-358e405d-1649-4be3-98d2-ab395ed8d5af.gif)
