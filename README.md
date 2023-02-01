@@ -25,9 +25,9 @@
   - 프로그래밍 언어 : C#
 
 ## 구현 기능
-  - 캐릭터
-    - 캐릭터 이동(걷기, 달리기)
- ![캐릭터 이동](https://user-images.githubusercontent.com/40791869/215987720-7919ec59-601f-4055-b230-2d9642377104.gif)
+
+#### 캐릭터 이동
+![캐릭터 이동](https://user-images.githubusercontent.com/40791869/215987720-7919ec59-601f-4055-b230-2d9642377104.gif)
 
   - 대사
     - CSV
