@@ -69,11 +69,13 @@
 ![더미러 뒤뜰](https://user-images.githubusercontent.com/40791869/216076586-c4df1485-7b82-483c-bf40-bf77927b9dfd.png)
 
 <br/>
+
 ### 거울
 ![더미러거울](https://user-images.githubusercontent.com/40791869/216079132-c477b4fa-6628-4fdc-a0a1-660ef204a811.gif)
 
 
 <br/>
+
 ### 라이터
     - 어두워진 화면에 밝기 제공
   
