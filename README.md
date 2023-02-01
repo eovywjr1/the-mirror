@@ -70,7 +70,8 @@
 
     
 ### 거울
-  
+![더미러거울](https://user-images.githubusercontent.com/40791869/216078687-1da72aa4-7943-4f20-8ea6-29a2c30dcaf0.gif)
+
 ### 라이터
     - 어두워진 화면에 밝기 제공
   
