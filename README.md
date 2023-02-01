@@ -46,9 +46,28 @@
 
     아이템, 아이템 선택
    
-### 레벨 조립
-    - 레벨 생성
-    - 레벨 이동
+### 레벨 
+    제단 입구
+![더미러ALTER](https://user-images.githubusercontent.com/40791869/216076109-bcb4f029-c32d-4729-99bd-1ef880023e6c.png)
+
+    1층 복도
+![더미러 1층 복도](https://user-images.githubusercontent.com/40791869/216076239-d8184914-ce57-49cb-b2d7-e52b1f1c087d.png)
+
+    1층 예배당
+![더미러예배당](https://user-images.githubusercontent.com/40791869/216076365-0f73a289-51b0-42e3-ab14-84b1b923b56e.png)
+
+    1층 새뜻공간
+![더미러새뜻공간](https://user-images.githubusercontent.com/40791869/216076450-24c1c1ce-f87e-4cbd-9b71-3a48bb253b53.png)
+
+    1층 화장실
+![더미러화장실](https://user-images.githubusercontent.com/40791869/216076501-ac799070-4418-4b93-ba3e-95aaa2db9f55.png)
+
+    1층 식당
+![더미러식당](https://user-images.githubusercontent.com/40791869/216076548-7f08c439-f443-424e-9d0c-b21500140a92.png)
+
+    1층 뒤들
+![더미러 뒤뜰](https://user-images.githubusercontent.com/40791869/216076586-c4df1485-7b82-483c-bf40-bf77927b9dfd.png)
+
     
 ### 거울
   
@@ -58,11 +77,3 @@
 ### 타이틀 화면
     - 시작
     - 종료
-
-<br/><br/><br/><br/>
-
-## 배운 점
-  - 거울
-    - 카메라를 따로 설치하고, 위치를 조정하여 오브젝트 뒤에서 투영하였습니다.
-    
-  - 원하는 기능들을 계속 추가하다보니 게임의 볼륨이 커져 정한 기간 안에 개발할 수 없었습니다.
