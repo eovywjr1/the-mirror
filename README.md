@@ -31,6 +31,7 @@
   - 걷기, 달리기
 
 #### 상호작용
+![ezgif com-gif-maker (2)](https://user-images.githubusercontent.com/40791869/216067930-358e405d-1649-4be3-98d2-ab395ed8d5af.gif)
 
     - 대사, CSV, Font, 타자 치듯이 텍스트 출력, 'E' 키를 누르면 플레이어 앞 오브젝트와 상호작용
   
