@@ -28,6 +28,7 @@
 
 #### 캐릭터 이동
 ![캐릭터 이동](https://user-images.githubusercontent.com/40791869/215987720-7919ec59-601f-4055-b230-2d9642377104.gif)
+  - 걷기, 달리기
 
   - 대사
     - CSV
