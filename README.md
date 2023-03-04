@@ -69,7 +69,7 @@
     1층 식당
 ![더미러식당](https://user-images.githubusercontent.com/40791869/216076548-7f08c439-f443-424e-9d0c-b21500140a92.png)
 
-    1층 뒤들
+    1층 뒤
 ![더미러 뒤뜰](https://user-images.githubusercontent.com/40791869/216076586-c4df1485-7b82-483c-bf40-bf77927b9dfd.png)
 
 <br/>
