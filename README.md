@@ -78,7 +78,3 @@
 ![더미러거울](https://user-images.githubusercontent.com/40791869/216079132-c477b4fa-6628-4fdc-a0a1-660ef204a811.gif)
 
 
-<br/>
-  
-### 타이틀 화면
-![더미러타이틀](https://user-images.githubusercontent.com/40791869/216090885-f6958aa0-3fcf-4b82-b434-9af1c16f9a51.gif)
